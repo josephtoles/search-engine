@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from web import views
+import web.views
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -7,7 +7,7 @@ from web import views
 
 urlpatterns = [
     # Examples:
-    url(r'^$', views.home, name='home'),
+    url(r'^$', web.views.home, name='home'),
 
     # url(r'^$', 'search.views.home', name='home'),
     # url(r'^search/', include('search.foo.urls')),
