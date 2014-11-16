@@ -2,9 +2,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from forms import URLForm
 from django.views.decorators.csrf import csrf_exempt
+from django.template import RequestContext, loader
 
 
-#@csrf_exempt  # TODO remove this when you figure out how to get CSRF to work
 def home_view(request):
     print 'getting home view'
     if request.method == 'POST':
@@ -14,11 +14,11 @@ def home_view(request):
             print 'form is valid'
             # set search url here
             print form.cleaned_data['url']
-            return render_to_response('home.html', {'form': form})
+            return render_to_response('home.html', {'form': form}, RequestContext(request))
         print 'form is not valid'
-        return render_to_response('home.html', {'form': form})
+        return render_to_response('home.html', {'form': form}, RequestContext(request))
     else:
         print 'method is not POST'
         form = URLForm() # An unbound form
-        return render_to_response('home.html', {'form': form})
+        return render_to_response('home.html', {'form': form}, RequestContext(request))
 

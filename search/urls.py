@@ -7,7 +7,7 @@ import web.views
 
 urlpatterns = [
     # Examples:
-    url(r'^$', web.views.home, name='home'),
+    url(r'^$', web.views.home_view, name='home'),
 
     # url(r'^$', 'search.views.home', name='home'),
     # url(r'^search/', include('search.foo.urls')),
