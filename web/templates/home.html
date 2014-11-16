@@ -1,5 +1,13 @@
-This the home template
-
+<p>
+    This the home template
+</p>
+<p>
+    {% if root %}
+        Root url is {{ root }}.
+    {% else %}
+        Could not find url.
+    {% endif %}
+</p>
 <form action="{% url 'home' %}"method="post">
     {% csrf_token %}
     {{ form }}
