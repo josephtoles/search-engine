@@ -28,6 +28,8 @@ def get_base_url(url):
     return result.netloc
 
 # move this function into models method
+# TODO clean up logic
+# TODO write unit test for this function
 def robots_txt_updated_recently(website):
     if not website.robots_updated:
         print 'not website.robots_updated'
