@@ -10,9 +10,10 @@ def home_view(request):
     if request.method == 'POST':
         form = URLForm(request.POST)
         if form.is_valid():
-            # set search url here
             url = form.cleaned_data['url']
             context['root'] = url
+            # crawl target url
+            # get list of sub-pages and add them to content
     else:
         form = URLForm() # An unbound form
     context['form'] = form
