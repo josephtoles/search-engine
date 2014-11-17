@@ -12,7 +12,7 @@ def get_base_url(url):
     result = urlparse(url)
     return result.netloc
 
-def update_robots_txt(url):
+def update_robots_txt(website):
     # update robots.txt if it's been a while since the last time.
     pass
 
@@ -22,8 +22,10 @@ def crawl_url(url):
     try webpage = Webpage.objects.get(url=base_url):
         # handle existing webpage
         pass
-    except Webpage.DoesNotExist:
-        # create new webpage
+    except Website.DoesNotExist:
+        website = Website.objects.create(url=base_url)
+        # check if website exists
+        # create new website
         pass
     # crawls through a url and subdomains and adds them to the database if not added recently
     # accesses target url once. Then updates new links only

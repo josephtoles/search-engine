@@ -5,6 +5,7 @@ class Website(models.Model):
     url = models.URLField(unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    exists = models.BooleanField()
 
     # robots.txt
     robots_exists = models.BooleanField()
