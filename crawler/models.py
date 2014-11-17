@@ -1,7 +1,7 @@
 from django.db import models
 
 
-def Website(models.Model):
+class Website(models.Model):
     url = models.URLField(unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -15,7 +15,7 @@ def Website(models.Model):
         ordering = ['url']
     
 
-def Webpage(models.Model):
+class Webpage(models.Model):
     url = models.URLField(unique=True)
     robots_allowed = models.BooleanField()
     website = models.ForeignKey('Website')
