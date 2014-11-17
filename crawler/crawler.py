@@ -1,5 +1,6 @@
 import urllib2
-from urlparse import urlparse
+from urlparse import urlparse, urljoin
+from models import Website
 
 # return appropriate pages from a url
 # TODO move this into filter app
@@ -13,20 +14,17 @@ def get_base_url(url):
     return result.netloc
 
 def update_robots_txt(website):
+    robots_url = urljoin(website.url, 'robots.txt')
+    print 'robots_url is %s' % robots_url
     # update robots.txt if it's been a while since the last time.
     pass
 
 def crawl_url(url):
     base_url = get_base_url(url)
     print 'base_url is %s' % base_url
-    try webpage = Webpage.objects.get(url=base_url):
-        # handle existing webpage
-        pass
-    except Website.DoesNotExist:
-        website = Website.objects.create(url=base_url)
-        # check if website exists
-        # create new website
-        pass
+    website = Website.objects.get_or_create(url=base_url)
+    print 'website is %s' % str(website)
+    update_robots_txt(website)
     # crawls through a url and subdomains and adds them to the database if not added recently
     # accesses target url once. Then updates new links only
     # TODO implement

@@ -10,7 +10,7 @@ class Website(models.Model):
     # robots.txt
     robots_exists = models.BooleanField()
     robots_content = models.TextField()
-    robots_updated = models.DateTimeField()
+    robots_updated = models.DateTimeField(null=True)
 
     class Meta:
         ordering = ['url']
