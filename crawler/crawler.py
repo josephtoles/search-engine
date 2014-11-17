@@ -2,6 +2,7 @@ import urllib2
 from urlparse import urlparse, urljoin
 from models import Website
 from datetime import datetime, timedelta, tzinfo
+import robotparser
 
 UPDATE_ROBOTS_TIME_DELTA = timedelta(days=1)
 
