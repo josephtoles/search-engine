@@ -3,7 +3,7 @@ from urlparse import urlparse, urljoin
 from models import Website
 from datetime import datetime, timedelta
 
-UPDATE_ROBOTS_TXT_TIME_DELTA = timedelta(days=1)
+UPDATE_ROBOTS_TIME_DELTA = timedelta(days=1)
 
 # return appropriate pages from a url
 # TODO move this into filter app
@@ -20,7 +20,7 @@ def get_base_url(url):
 # move this function into models method
 def robots_txt_updated_recently(website):
     return (not website.robots_updated) or \
-        website.robots_updated + UPDATE_ROBOTS_TXT_TIME_DELTA < datetime.now()
+        website.robots_updated + UPDATE_ROBOTS_TIME_DELTA < datetime.now()
 
 def update_robots_txt(website):
     if not robots_txt_updated_recently(website):
