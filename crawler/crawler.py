@@ -1,6 +1,9 @@
 import urllib2
 from urlparse import urlparse, urljoin
 from models import Website
+from datetime import datetime, timedelta
+
+UPDATE_ROBOTS_TXT_TIME_DELTA = timedelta(days=1)
 
 # return appropriate pages from a url
 # TODO move this into filter app
@@ -11,12 +14,21 @@ def get_pages(url):
 # parses the base url out of a full url
 def get_base_url(url):
     result = urlparse(url)
+    print 'result is %s' % str(result)
     return result.netloc
 
+# move this function into models method
+def robots_txt_updated_recently(website):
+    return (not website.robots_updated) or \
+        website.robots_updated + UPDATE_ROBOTS_TXT_TIME_DELTA < datetime.now()
+
 def update_robots_txt(website):
-    robots_url = urljoin(website.url, 'robots.txt')
-    print 'robots_url is %s' % robots_url
-    # update robots.txt if it's been a while since the last time.
+    if not robots_txt_updated_recently(website):
+        robots_url = urljoin('http://'+website.url, 'robots.txt')
+        print 'robots_url is %s' % robots_url
+        print 'website.url is %s' % website.url
+        # update robots.txt if it's been a while since the last time.
+        website.robots_updated = datetime.now()
     pass
 
 def crawl_url(url):

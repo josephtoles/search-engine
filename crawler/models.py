@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Website(models.Model):
-    url = models.URLField(unique=True)
+    url = models.URLField(unique=True)  # netloc in urlparse
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     exists = models.BooleanField()
