@@ -37,13 +37,12 @@ def robots_txt_updated_recently(website):
     now = datetime.now(UTC())
     print 'type of updated is %s' % website.robots_updated
     print 'type of now is %s' % now
-    if website.robots_updated + UPDATE_ROBOTS_TIME_DELTA < now:
+    if website.robots_updated + UPDATE_ROBOTS_TIME_DELTA > now:
         print 'wrong time'
         return True
     print 'not updated recently'
     return False
         
-
 def update_robots_txt(website):
     if not robots_txt_updated_recently(website):
         print 'getting robots.txt for %s' % website.url
