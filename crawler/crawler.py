@@ -22,7 +22,7 @@ def update_robots_txt(website):
 def crawl_url(url):
     base_url = get_base_url(url)
     print 'base_url is %s' % base_url
-    website = Website.objects.get_or_create(url=base_url)
+    website, created = Website.objects.get_or_create(url=base_url)
     print 'website is %s' % str(website)
     update_robots_txt(website)
     # crawls through a url and subdomains and adds them to the database if not added recently
