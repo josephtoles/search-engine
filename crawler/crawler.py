@@ -1,9 +1,19 @@
 import urllib2
 from urlparse import urlparse, urljoin
 from models import Website
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, tzinfo
 
 UPDATE_ROBOTS_TIME_DELTA = timedelta(days=1)
+
+ZERO = timedelta(0)
+
+class UTC(tzinfo):
+  def utcoffset(self, dt):
+    return ZERO
+  def tzname(self, dt):
+    return "UTC"
+  def dst(self, dt):
+    return ZERO
 
 # return appropriate pages from a url
 # TODO move this into filter app
@@ -19,17 +29,35 @@ def get_base_url(url):
 
 # move this function into models method
 def robots_txt_updated_recently(website):
-    return (not website.robots_updated) or \
-        website.robots_updated + UPDATE_ROBOTS_TIME_DELTA < datetime.now()
+    if not website.robots_updated:
+        print 'not website.robots_updated'
+        return False
+    now = datetime.now(UTC())
+    print 'type of updated is %s' % website.robots_updated
+    print 'type of now is %s' % now
+    if website.robots_updated + UPDATE_ROBOTS_TIME_DELTA < now:
+        print 'wrong time'
+        return True
+    print 'not updated recently'
+    return False
+        
 
 def update_robots_txt(website):
     if not robots_txt_updated_recently(website):
+        print 'getting robots.txt for %s' % website.url
         robots_url = urljoin('http://'+website.url, 'robots.txt')
         print 'robots_url is %s' % robots_url
         print 'website.url is %s' % website.url
+        response = urllib2.urlopen(robots_url)
+        html = response.read()
+        print 'html is %s' % html
+        website.robots_content = html
         # update robots.txt if it's been a while since the last time.
         website.robots_updated = datetime.now()
-    pass
+        website.save()
+        print 'got robots.txt for %s' % website.url
+    else:
+        print 'not getting robots.txt for %s' % website.url
 
 def crawl_url(url):
     base_url = get_base_url(url)
