@@ -1,6 +1,30 @@
-# This is the web scraper
+import urllib2
+from urlparse import urlparse
+
+# return appropriate pages from a url
+# TODO move this into filter app
+def get_pages(url):
+    crawl_url(url)
+    return []
+
+# parses the base url out of a full url
+def get_base_url(url):
+    result = urlparse(url)
+    return result.netloc
+
+def update_robots_txt(url):
+    # update robots.txt if it's been a while since the last time.
+    pass
 
 def crawl_url(url):
+    base_url = get_base_url(url)
+    print 'base_url is %s' % base_url
+    try webpage = Webpage.objects.get(url=base_url):
+        # handle existing webpage
+        pass
+    except Webpage.DoesNotExist:
+        # create new webpage
+        pass
     # crawls through a url and subdomains and adds them to the database if not added recently
     # accesses target url once. Then updates new links only
     # TODO implement
