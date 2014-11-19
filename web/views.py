@@ -3,8 +3,8 @@ from django.shortcuts import render, render_to_response
 from forms import URLForm
 from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext, loader
-from crawler.crawler import get_pages
-from crawler.models import Website
+from crawler import get_pages
+from models import Website
 from urlparse import urlparse
 from datetime import datetime
 
