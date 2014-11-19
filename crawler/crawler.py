@@ -3,8 +3,7 @@ from urlparse import urlparse, urljoin
 from models import Website
 from datetime import datetime, timedelta, tzinfo
 import robotparser
-# robotparser documentation at
-# https://docs.python.org/2/library/robotparser.html
+# robotparser documentation at https://docs.python.org/2/library/robotparser.html
 
 UPDATE_ROBOTS_TIME_DELTA = timedelta(days=1)
 
