@@ -28,18 +28,10 @@ class UTC(tzinfo):
 # FUNCTIONS #
 #############
 
-# parses the base url out of a full url
-def get_base_url(url):
-    return urlparse(url).netloc
-
-# move this function into models method
-# TODO clean up logic
-# TODO write unit test for this function
 def robots_txt_updated_recently(website):
     if not website.robots_updated:
         return False
-    now = datetime.now(UTC())
-    return website.robots_updated + UPDATE_ROBOTS_TIME_DELTA > now
+    return website.robots_updated + UPDATE_ROBOTS_TIME_DELTA > datetime.now(UTC())
         
 def update_robots_txt_if_necessary(website):
     if not robots_txt_updated_recently(website):
@@ -59,7 +51,7 @@ def update_robots_txt_if_necessary(website):
         print 'not getting robots.txt for %s' % website.url
 
 def crawl_url(url):
-    base_url = get_base_url(url)
+    base_url = urlparse(url).netloc
     print 'base_url is %s' % base_url
     website, created = Website.objects.get_or_create(url=base_url)
     print 'website is %s' % str(website)
