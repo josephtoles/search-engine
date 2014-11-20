@@ -18,14 +18,14 @@ def home_view(request):
             url = form.cleaned_data['url']
             context['root'] = url
             pages = crawl_url(url)
-            print 'pages are %s' % str(pages)
+            #print 'pages are %s' % str(pages)
             # crawl target url
             # get list of sub-pages and add them to content
 
             # Robots testing
-            print 'listing'
-            for site in Website.objects.all():
-                print site.url
+            #print 'listing'
+            #for site in Website.objects.all():
+                #print site.url
             site = Website.objects.get(url=urlparse(url).netloc)
             robots_updated = site.robots_updated
             context['robots_last_updated'] = robots_updated

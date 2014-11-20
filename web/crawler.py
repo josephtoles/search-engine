@@ -1,5 +1,7 @@
+import robotexclusionrulesparser
 import urllib2
 #import robotparser
+from robotexclusionrulesparser import RobotExclusionRulesParser
 from urlparse import urlparse, urljoin
 from datetime import datetime, timedelta, tzinfo
 from models import Website
@@ -51,6 +53,12 @@ def crawl_url(url):
     # crawls through a url and subdomains and adds them to the database if not added recently
     # accesses target url once. Then updates new links only
     # TODO implement
+    rerp = RobotExclusionRulesParser()
+    rerp.parse(website.robots_content)
+    if rerp.is_allowed('*', '/foo.html'):
+        print 'is allowed'
+    else:
+        print 'is not allowed'
     pass
 
 
