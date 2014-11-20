@@ -30,9 +30,7 @@ class UTC(tzinfo):
 
 # parses the base url out of a full url
 def get_base_url(url):
-    result = urlparse(url)
-    print 'result is %s' % str(result)
-    return result.netloc
+    return urlparse(url).netloc
 
 # move this function into models method
 # TODO clean up logic

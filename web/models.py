@@ -17,7 +17,7 @@ class Website(models.Model):
     
 
 class Webpage(models.Model):
-    url = models.URLField(unique=True)
+    url = models.URLField(unique=True)  # full url
     robots_allowed = models.BooleanField()
     website = models.ForeignKey('Website')
     content = models.TextField()
