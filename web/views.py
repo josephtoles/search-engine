@@ -3,7 +3,7 @@ from django.shortcuts import render, render_to_response
 from forms import URLForm
 from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext, loader
-from crawler import get_pages
+from crawler import crawl_url
 from models import Website
 from urlparse import urlparse
 from datetime import datetime
@@ -17,7 +17,7 @@ def home_view(request):
             # Get url
             url = form.cleaned_data['url']
             context['root'] = url
-            pages = get_pages(url)
+            pages = crawl_url(url)
             print 'pages are %s' % str(pages)
             # crawl target url
             # get list of sub-pages and add them to content
