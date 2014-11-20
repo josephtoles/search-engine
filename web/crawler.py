@@ -1,8 +1,9 @@
 import urllib2
-import robotparser
+#import robotparser
 from urlparse import urlparse, urljoin
 from datetime import datetime, timedelta, tzinfo
 from models import Website
+# Use http://nikitathespider.com/python/rerp/ instead of robotparser
 # robotparser documentation at https://docs.python.org/2/library/robotparser.html
 
 #############
