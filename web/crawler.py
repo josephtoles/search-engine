@@ -46,6 +46,7 @@ def update_robots_txt_if_necessary(website):
         website.robots_updated = datetime.now()
         website.save()
 
+# add a single url to the database if necessary
 def crawl_url(url):
     base_url = urlparse(url).netloc
     website, created = Website.objects.get_or_create(url=base_url)
