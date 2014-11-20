@@ -33,43 +33,22 @@ def robots_txt_updated_recently(website):
         return False
     return website.robots_updated + UPDATE_ROBOTS_TIME_DELTA > datetime.now(UTC())
         
+# update robots.txt if it's been a while since the last time.
 def update_robots_txt_if_necessary(website):
     if not robots_txt_updated_recently(website):
-        print 'getting robots.txt for %s' % website.url
         robots_url = urljoin('http://'+website.url, 'robots.txt')
-        print 'robots_url is %s' % robots_url
-        print 'website.url is %s' % website.url
         response = urllib2.urlopen(robots_url)
         html = response.read()
-        print 'html is %s' % html
         website.robots_content = html
-        # update robots.txt if it's been a while since the last time.
         website.robots_updated = datetime.now()
         website.save()
-        print 'got robots.txt for %s' % website.url
-    else:
-        print 'not getting robots.txt for %s' % website.url
 
 def crawl_url(url):
     base_url = urlparse(url).netloc
-    print 'base_url is %s' % base_url
     website, created = Website.objects.get_or_create(url=base_url)
-    print 'website is %s' % str(website)
     update_robots_txt_if_necessary(website)
     # crawls through a url and subdomains and adds them to the database if not added recently
     # accesses target url once. Then updates new links only
-    # TODO implement
-    pass
-
-def crawl_robots_txt(url):
-    # attempts to download a url's robots.txt file it not already accessed recently
-    # TODO implement
-    pass
-
-def is_forbidden(url):
-    crawl_robots_txt(url)
-    # has robots.txt been downloaded recently?
-    # tests whether a url is forbidden to be accessed by a robots.txt file
     # TODO implement
     pass
 
