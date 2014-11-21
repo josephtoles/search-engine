@@ -1,4 +1,5 @@
 import robotexclusionrulesparser
+from bs4 import BeautifulSoup
 import urllib2
 from robotexclusionrulesparser import RobotExclusionRulesParser
 from urlparse import urlparse, urljoin
@@ -68,7 +69,8 @@ def crawl_url(url):
         if created or not crawled_recently(webpage):
             response = urllib2.urlopen(url)
             html = response.read()
-            webpage.content = str(html)  # 8-bit to unicode
+            #webpage.content = str(html)  # 8-bit to unicode
+            webpage.content = unicode(html, 'unicode-escape')
             webpage.save()
             updated = True
         else: # Already have page
@@ -80,14 +82,14 @@ def crawl_url(url):
 
 # get links from a block of html
 def get_links(html):
-    # TODO implement
-    pass
+    soup = BeautifulSoup(html)
+    return soup.find_all('a'):
 
 # breadth-first recusive url search
 # input a domain and then get that and all subdomains
 # when first called, set base_url = current_url
-def crawl_url_subdomains_recursive(base_url, num_left=20):
-    links = [base_url]
+def crawl_url_subdomains(base_url, num_left=20):
+    links = [str(base_url)]
     i = 0
     while(i <= len(links)):
         webpage, updated = crawl_url(links[i])
