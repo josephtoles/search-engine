@@ -7,6 +7,8 @@ from models import Website, Webpage
 
 # custom django commands
 # https://docs.djangoproject.com/en/dev/howto/custom-management-commands/
+# http://stackoverflow.com/questions/4291895/django-should-i-kick-off-a-separate-process
+# use call_command, extract to a Process http://stackoverflow.com/questions/13239087/django-multiprocessing-oddity
 
 #############
 # CONSTANTS #
@@ -69,4 +71,5 @@ def crawl_url(url):
     else:
         Webpage.objects.filter(url=url).delete()
 
+# breadth-first recusive url search
 
