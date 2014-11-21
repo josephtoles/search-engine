@@ -42,35 +42,59 @@ def robots_txt_updated_recently(website):
 # update robots.txt if it's been a while since the last time.
 def update_robots_txt_if_necessary(website):
     if not robots_txt_updated_recently(website):
-        robots_url = urljoin('http://'+website.url, 'robots.txt')
+        robots_url = urljoin('http://' + website.url, 'robots.txt')
         response = urllib2.urlopen(robots_url)
         html = response.read()
         website.robots_content = html
         website.robots_updated = datetime.now()
         website.save()
 
+def crawled_recently(webpage):
+    return datetime.now(UTC()) - webpage.updated < UPDATE_WEBPAGE_TIME_DELTA
+
 # add a single url to the database if necessary
+# returns a tuple (webpage, created)
+# where webpage is the webpage (None if not accessible)
+# and created is a boolean representing whether the webpage was actually fetched with this call
 def crawl_url(url):
     base_url = urlparse(url).netloc
     website, created = Website.objects.get_or_create(url=base_url)
     update_robots_txt_if_necessary(website)
-    # crawls through a url and subdomains and adds them to the database if not added recently
-    # accesses target url once. Then updates new links only
     rerp = RobotExclusionRulesParser()
     rerp.parse(website.robots_content)
     if rerp.is_allowed('*', '/foo.html'):
         webpage, created = Webpage.objects.get_or_create(url=url, website=website)
         # update webpage content
-        if created or datetime.now(UTC()) - webpage.updated > UPDATE_WEBPAGE_TIME_DELTA :
+        if created or not crawled_recently(webpage):
             response = urllib2.urlopen(url)
             html = response.read()
             webpage.content = str(html)  # 8-bit to unicode
             webpage.save()
+            updated = True
         else: # Already have page
-            pass
+            updated = False
+        return (webpage, updated)
     else:
         Webpage.objects.filter(url=url).delete()
+        return (None, False)
+
+# get links from a block of html
+def get_links(html):
+    # TODO implement
+    pass
 
 # breadth-first recusive url search
-def crawl_url_recusive(url):
-    
+# input a domain and then get that and all subdomains
+# when first called, set base_url = current_url
+def crawl_url_subdomains_recursive(base_url, num_left=20):
+    links = [base_url]
+    i = 0
+    while(i <= len(links)):
+        webpage, updated = crawl_url(links[i])
+        if updated:
+            # TODO add sleep command here
+            num_left -= 1
+        if webpage:
+            html = webpage.content
+            links.extend(get_links(html))
+
