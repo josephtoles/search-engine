@@ -1,12 +1,10 @@
 import robotexclusionrulesparser
 import urllib2
-#import robotparser
 from robotexclusionrulesparser import RobotExclusionRulesParser
 from urlparse import urlparse, urljoin
 from datetime import datetime, timedelta, tzinfo
 from models import Website, Webpage
 # Use http://nikitathespider.com/python/rerp/ instead of robotparser
-# robotparser documentation at https://docs.python.org/2/library/robotparser.html
 
 #############
 # CONSTANTS #
