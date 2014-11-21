@@ -1,4 +1,5 @@
 import robotexclusionrulesparser
+import time
 from bs4 import BeautifulSoup
 import urllib2
 from robotexclusionrulesparser import RobotExclusionRulesParser
@@ -70,12 +71,16 @@ def crawl_url(url, website, force=False):
             print 'opening url %s' % url
             if url.startswith('/'):  # TODO clean up this hack
                 url = urljoin('http://' + website.url, url)
-            response = urllib2.urlopen(url)
-            html = response.read()
-            #webpage.content = str(html)  # 8-bit to unicode
-            webpage.content = unicode(html, 'unicode-escape')
-            webpage.save()
-            updated = True
+            try:
+                response = urllib2.urlopen(url)
+                html = response.read()
+                #webpage.content = str(html)  # 8-bit to unicode
+                webpage.content = unicode(html, 'unicode-escape')
+                webpage.save()
+                updated = True
+            except ValueError:  # urllib2 unknown url type
+                webpage.delete()
+                return (None, False)
         else: # Already have page
             updated = False
         return (webpage, updated)
@@ -119,6 +124,8 @@ def crawl_url_subdomains(url, num_left=20):
     while(i <= len(links)):
         print 'crawling recursive, i=%s' % i
         webpage, updated = crawl_url(links[i], website, i==0)
+        if updated:
+            time.sleep(1)  # randomize
         if updated:
             # TODO add sleep command here
             num_left -= 1
