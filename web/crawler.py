@@ -4,7 +4,9 @@ from robotexclusionrulesparser import RobotExclusionRulesParser
 from urlparse import urlparse, urljoin
 from datetime import datetime, timedelta, tzinfo
 from models import Website, Webpage
-# Use http://nikitathespider.com/python/rerp/ instead of robotparser
+
+# custom django commands
+# https://docs.djangoproject.com/en/dev/howto/custom-management-commands/
 
 #############
 # CONSTANTS #
