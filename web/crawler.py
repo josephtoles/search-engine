@@ -4,7 +4,7 @@ import urllib2
 from robotexclusionrulesparser import RobotExclusionRulesParser
 from urlparse import urlparse, urljoin
 from datetime import datetime, timedelta, tzinfo
-from models import Website
+from models import Website, Webpage
 # Use http://nikitathespider.com/python/rerp/ instead of robotparser
 # robotparser documentation at https://docs.python.org/2/library/robotparser.html
 
@@ -13,6 +13,7 @@ from models import Website
 #############
 
 UPDATE_ROBOTS_TIME_DELTA = timedelta(days=1)
+UPDATE_WEBPAGE_TIME_DELTA = timedelta(days=1)
 
 #####################
 # TIMEZONE HANDLING #
@@ -53,13 +54,19 @@ def crawl_url(url):
     update_robots_txt_if_necessary(website)
     # crawls through a url and subdomains and adds them to the database if not added recently
     # accesses target url once. Then updates new links only
-    # TODO implement
     rerp = RobotExclusionRulesParser()
     rerp.parse(website.robots_content)
     if rerp.is_allowed('*', '/foo.html'):
-        print 'is allowed'
+        webpage, created = Webpage.objects.get_or_create(url=url, website=website)
+        # update webpage content
+        if created or datetime.now(UTC()) - webpage.updated > UPDATE_WEBPAGE_TIME_DELTA :
+            response = urllib2.urlopen(url)
+            html = response.read()
+            webpage.content = str(html)  # 8-bit to unicode
+            webpage.save()
+        else: # Already have page
+            pass
     else:
-        print 'is not allowed'
-    pass
+        Webpage.objects.filter(url=url).delete()
 
 
