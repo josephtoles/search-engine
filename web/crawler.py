@@ -84,9 +84,12 @@ def crawl_url(url):
 
 # get links from a block of html
 def get_links(html):
+    #TODO this doesn't work. Fix it.
     print 'getting links'
     soup = BeautifulSoup(html)
-    return soup.find_all('a')
+    output = soup.find_all('a')
+    print output
+    return output
 
 # breadth-first recusive url search
 # input a domain and then get that and all subdomains
