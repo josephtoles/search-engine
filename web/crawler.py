@@ -40,11 +40,9 @@ def robots_txt_updated_recently(website):
     if not website.robots_updated:
         return False
     try:
-        return datetime.now() - website.robots_updated < UPDATE_ROBOTS_TIME_DELTA  # Just changed this. I am confused
+        return datetime.now() - website.robots_updated < UPDATE_ROBOTS_TIME_DELTA
     except TypeError:  # something to do with internal datetimes
-        import pdb; pdb.set_trace()
-        print 'caught internal time error'
-        return False
+        return datetime.now(UTC()) - website.robots_updated < UPDATE_ROBOTS_TIME_DELTA
         
 # update robots.txt if it's been a while since the last time.
 def update_robots_txt_if_necessary(website):
@@ -61,6 +59,11 @@ def update_robots_txt_if_necessary(website):
 def crawled_recently(webpage):
     return datetime.now(UTC()) - webpage.updated < UPDATE_WEBPAGE_TIME_DELTA
 
+# eliminates bad urls like javascript.void(0) and truncates off query parametersw
+# reurns boolean representing whether url can be used appropriately
+def parse_url(url):
+    return urlparse(url).path
+
 # add a single url to the database if necessary
 # returns a tuple (webpage, created)
 # where webpage is the webpage (None if not accessible)
@@ -71,6 +74,7 @@ def crawl_url(url, website, force=False):
     rerp = RobotExclusionRulesParser()
     rerp.parse(website.robots_content)
     if rerp.is_allowed('*', '/foo.html'):
+        parse_url(url)
         print 'trying website=%s and url=%s' % (website, url)
         webpage, created = Webpage.objects.get_or_create(url=url, website=website)
         # update webpage content
@@ -130,6 +134,8 @@ def get_links(html, website):
 # when first called, set base_url = current_url
 def crawl_url_subdomains(url, num_left=5):
     base_url = urlparse(url).netloc
+    if base_url.startswith('www.'):  # dirty hack
+        base_url = base_url[len('www.'):]
     website, created = Website.objects.get_or_create(url=base_url)
     if not base_url:
         raise ValueError('base_url cannot be blank')
