@@ -8,7 +8,7 @@ from web.time_util import UTC
 #############
 
 UPDATE_ROBOTS_TIME_DELTA = timedelta(days=1)
-
+UPDATE_WEBPAGE_TIME_DELTA = timedelta(days=1)
 
 ##########
 # MODELS #
@@ -37,7 +37,6 @@ class Website(models.Model):
         except TypeError:  # something to do with internal datetimes
             return datetime.now(UTC()) - self.robots_updated < UPDATE_ROBOTS_TIME_DELTA
 
-
 class Webpage(models.Model):
     url = models.URLField()  # full or local url, I think
     robots_allowed = models.BooleanField()
@@ -49,4 +48,8 @@ class Webpage(models.Model):
     class Meta:
         ordering = ['url']
         unique_together = ['url', 'website']
+
+    @property
+    def crawled_recently(self):
+        return datetime.now(UTC()) - self.updated < UPDATE_WEBPAGE_TIME_DELTA
 

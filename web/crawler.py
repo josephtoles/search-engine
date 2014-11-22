@@ -14,12 +14,6 @@ from web.time_util import UTC
 # http://stackoverflow.com/questions/4291895/django-should-i-kick-off-a-separate-process
 # use call_command, extract to a Process http://stackoverflow.com/questions/13239087/django-multiprocessing-oddity
 
-#############
-# CONSTANTS #
-#############
-
-UPDATE_WEBPAGE_TIME_DELTA = timedelta(days=1)
-
 
 #############
 # FUNCTIONS #
@@ -35,16 +29,13 @@ def update_robots_txt_if_necessary(website):
         website.robots_updated = datetime.now()
         website.save()
 
-def crawled_recently(webpage):
-    return datetime.now(UTC()) - webpage.updated < UPDATE_WEBPAGE_TIME_DELTA
-
 # eliminates bad urls like javascript.void(0) and truncates off query parametersw
 # reurns boolean representing whether url can be used appropriately
 def parse_url(url):
     return urlparse(url).path
 
 def url_is_valid(url):
-    if '(' in url or ')' in url:
+    if '(' in url or ')' in url:  # quick hack to avoid what seems to be a JavaScript function
         return False
     return True
 
@@ -63,7 +54,7 @@ def crawl_url(url, website, force=False):
         print '\ntrying website=%s and url=%s' % (website, url)
         webpage, created = Webpage.objects.get_or_create(url=url, website=website)
         # update webpage content
-        if created or force or not crawled_recently(webpage):
+        if created or force or not webpage.crawled_recently:
             print 'opening url %s' % url
             if url.startswith('/'):  # TODO clean up this hack
                 url = urljoin('http://' + website.url, url)
