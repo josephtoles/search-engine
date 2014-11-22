@@ -97,6 +97,7 @@ def get_links(html, website):
 # input a domain and then get that and all subdomains
 # when first called, set base_url = current_url
 def crawl_url_subdomains(url, num_left=5, max_tries=1000):
+    print 'crawling url subdomains'
     base_url = urlparse(url).netloc
     if base_url.startswith('www.'):  # dirty hack
         base_url = base_url[len('www.'):]

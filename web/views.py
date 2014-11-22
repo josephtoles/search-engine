@@ -1,3 +1,5 @@
+from multiprocessing import Process
+from django.core.management import call_command
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from forms import URLForm
@@ -18,11 +20,17 @@ def home_view(request):
             url = form.cleaned_data['url']
 
             # crawl
-            pages = crawl_url_subdomains(url, num_left=5)
+            p = Process(target=call_command, args = (url,))
+            # non-multithreaded version
+            # pages = crawl_url_subdomains(url, num_left=5)
 
             # get links
-            site = Website.objects.get(url=urlparse(url).netloc)
-            context['pages'] = Webpage.objects.filter(website=site).all()[:10]
+            try:
+                site = Website.objects.get(url=urlparse(url).netloc)
+                context['pages'] = Webpage.objects.filter(website=site).all()[:10]
+            except Website.DoesNotExist:
+                # add 'please wait message to output'
+                pass
     else:
         form = URLForm() # An unbound form
     context['form'] = form
