@@ -37,6 +37,16 @@ class Website(models.Model):
         except TypeError:  # something to do with internal datetimes
             return datetime.now(UTC()) - self.robots_updated < UPDATE_ROBOTS_TIME_DELTA
 
+    # update robots.txt if it's been a while since the last time.
+    def update_robots_txt_if_necessary(self):
+        if not self.robots_txt_updated_recently:
+            robots_url = urljoin('http://' + self.url, 'robots.txt')
+            response = urllib2.urlopen(robots_url)
+            html = response.read()
+            self.robots_content = html
+            self.robots_updated = datetime.now()
+            self.save()
+
 class Webpage(models.Model):
     url = models.URLField()  # full or local url, I think
     robots_allowed = models.BooleanField()
