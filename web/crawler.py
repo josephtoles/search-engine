@@ -40,8 +40,9 @@ def robots_txt_updated_recently(website):
     if not website.robots_updated:
         return False
     try:
-        return website.robots_updated + UPDATE_ROBOTS_TIME_DELTA > datetime.now(UTC())
+        return datetime.now() - website.robots_updated < UPDATE_ROBOTS_TIME_DELTA  # Just changed this. I am confused
     except TypeError:  # something to do with internal datetimes
+        import pdb; pdb.set_trace()
         print 'caught internal time error'
         return False
         
@@ -84,7 +85,10 @@ def crawl_url(url, website, force=False):
                 webpage.content = unicode(html, 'unicode-escape')
                 webpage.save()
                 updated = True
-            except ValueError:  # urllib2 unknown url type
+            except ValueError:  # urllib2 unknown url type (ex #lkjsdf, I think maybe)
+                webpage.delete()
+                return (None, False)
+            except urllib2.URLError:  # urllib2 unknown url type (ex Javascript)
                 webpage.delete()
                 return (None, False)
             except urllib2.HTTPError:  # urllib2 503 error
@@ -124,7 +128,7 @@ def get_links(html, website):
 # breadth-first recusive url search
 # input a domain and then get that and all subdomains
 # when first called, set base_url = current_url
-def crawl_url_subdomains(url, num_left=20):
+def crawl_url_subdomains(url, num_left=5):
     base_url = urlparse(url).netloc
     website, created = Website.objects.get_or_create(url=base_url)
     if not base_url:
@@ -132,7 +136,7 @@ def crawl_url_subdomains(url, num_left=20):
     print 'crawling url subdomains'
     links = [str(url)]
     i = 0
-    while(i <= len(links) and num_left >= 0):
+    while(i < len(links) and num_left >= 0):
         print 'crawling recursive, i=%s of %s' % (i, len(links))
         print 'num_left=%s' % num_left
         webpage, updated = crawl_url(links[i], website, i==0)
