@@ -17,7 +17,7 @@ def home_view(request):
             # Get url
             url = form.cleaned_data['url']
             context['root'] = url
-            pages = crawl_url_subdomains(url, num_left=5)
+            pages = crawl_url_subdomains(url, num_left=35)
             #print 'pages are %s' % str(pages)
             # crawl target url
             # get list of sub-pages and add them to content
