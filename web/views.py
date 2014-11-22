@@ -22,7 +22,7 @@ def home_view(request):
 
             # get links
             site = Website.objects.get(url=urlparse(url).netloc)
-            context['links'] = Webpage.objects.filter(website=site).all()[:10]
+            context['pages'] = Webpage.objects.filter(website=site).all()[:10]
     else:
         form = URLForm() # An unbound form
     context['form'] = form

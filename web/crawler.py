@@ -47,10 +47,8 @@ def robots_txt_updated_recently(website):
         
 # update robots.txt if it's been a while since the last time.
 def update_robots_txt_if_necessary(website):
-    print 'handling robots.txt'
     if not robots_txt_updated_recently(website):
         robots_url = urljoin('http://' + website.url, 'robots.txt')
-        print 'robots_url is %s' % robots_url
         response = urllib2.urlopen(robots_url)
         html = response.read()
         website.robots_content = html
@@ -82,7 +80,7 @@ def crawl_url(url, website, force=False):
         url = parse_url(url)
         if not url_is_valid(url):
             return (None, False)
-        print 'trying website=%s and url=%s' % (website, url)
+        print '\ntrying website=%s and url=%s' % (website, url)
         webpage, created = Webpage.objects.get_or_create(url=url, website=website)
         # update webpage content
         if created or force or not crawled_recently(webpage):
@@ -147,7 +145,7 @@ def crawl_url_subdomains(url, num_left=5, max_tries=1000):
     links = [str(url)]
     i = 0
     while(i < len(links) and num_left >= 0 and max_tries >= 0):
-        print 'crawling recursive, i=%s of %s' % (i, len(links))
+        print 'crawling recursive, i=%s of %s, max_tries=%s' % (i, len(links), max_tries)
         print 'num_left=%s' % num_left
         webpage, updated = crawl_url(links[i], website, i==0)
         if updated:
