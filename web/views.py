@@ -22,8 +22,10 @@ def home_view(request):
 
             # crawl
             # Very poorly managed. This should have some safety features
-            p = Process(target=call_command, args=('crawl_url_subdomains', url))
-            p.start()
+            #p = Process(target=call_command, args=('crawl_url_subdomains', url))
+            #p.start()
+            # you should really just create a seperate crawl command to search important domains. It should be running whenever the server is running
+            crawl_url_subdomains(url)
 
             # get links
             try:
