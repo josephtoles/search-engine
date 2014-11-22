@@ -61,6 +61,7 @@ def crawled_recently(webpage):
 # where webpage is the webpage (None if not accessible)
 # and created is a boolean representing whether the webpage was actually fetched with this call
 def crawl_url(url, website, force=False):
+    http_error_count = 0
     update_robots_txt_if_necessary(website)
     rerp = RobotExclusionRulesParser()
     rerp.parse(website.robots_content)
@@ -79,6 +80,11 @@ def crawl_url(url, website, force=False):
                 webpage.save()
                 updated = True
             except ValueError:  # urllib2 unknown url type
+                webpage.delete()
+                return (None, False)
+            except urllib2.HTTPError:  # urllib2 503 error
+                http_error_count += 1
+                print 'http_error_count is %s' % http_error_count
                 webpage.delete()
                 return (None, False)
         else: # Already have page
@@ -121,8 +127,9 @@ def crawl_url_subdomains(url, num_left=20):
     print 'crawling url subdomains'
     links = [str(url)]
     i = 0
-    while(i <= len(links)):
-        print 'crawling recursive, i=%s' % i
+    while(i <= len(links) and num_left >= 0):
+        print 'crawling recursive, i=%s of %s' % (i, len(links))
+        print 'num_left=%s' % num_left
         webpage, updated = crawl_url(links[i], website, i==0)
         if updated:
             time.sleep(1)  # randomize
