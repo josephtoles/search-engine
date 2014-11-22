@@ -1,6 +1,8 @@
+from bs4 import BeautifulSoup
 from django.db import models
 from datetime import datetime, timedelta, tzinfo
 from web.time_util import UTC
+from urlparse import urljoin
 
 
 #############
@@ -62,4 +64,16 @@ class Webpage(models.Model):
     @property
     def crawled_recently(self):
         return datetime.now(UTC()) - self.updated < UPDATE_WEBPAGE_TIME_DELTA
+
+    @property
+    def get_title(self):
+        soup = BeautifulSoup(self.content)
+        return soup.title.string
+
+    @property
+    def full_url(self):
+        # Cheap hack. You should do this properly instead.
+        if self.url.startswith('/'):
+            return 'http://www.' + self.website.url + self.url
+        return self.url
 
