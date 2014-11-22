@@ -19,16 +19,6 @@ from web.time_util import UTC
 # FUNCTIONS #
 #############
 
-# update robots.txt if it's been a while since the last time.
-def update_robots_txt_if_necessary(website):
-    if not website.robots_txt_updated_recently:
-        robots_url = urljoin('http://' + website.url, 'robots.txt')
-        response = urllib2.urlopen(robots_url)
-        html = response.read()
-        website.robots_content = html
-        website.robots_updated = datetime.now()
-        website.save()
-
 # eliminates bad urls like javascript.void(0) and truncates off query parametersw
 # reurns boolean representing whether url can be used appropriately
 def parse_url(url):
