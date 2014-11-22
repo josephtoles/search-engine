@@ -1,4 +1,5 @@
 import robotexclusionrulesparser
+from random import random
 import time
 from bs4 import BeautifulSoup
 import urllib2
@@ -64,17 +65,23 @@ def crawled_recently(webpage):
 def parse_url(url):
     return urlparse(url).path
 
+def url_is_valid(url):
+    if '(' in url or ')' in url:
+        return False
+    return True
+
 # add a single url to the database if necessary
 # returns a tuple (webpage, created)
 # where webpage is the webpage (None if not accessible)
 # and created is a boolean representing whether the webpage was actually fetched with this call
 def crawl_url(url, website, force=False):
-    http_error_count = 0
     update_robots_txt_if_necessary(website)
     rerp = RobotExclusionRulesParser()
     rerp.parse(website.robots_content)
     if rerp.is_allowed('*', '/foo.html'):
-        parse_url(url)
+        url = parse_url(url)
+        if not url_is_valid(url):
+            return (None, False)
         print 'trying website=%s and url=%s' % (website, url)
         webpage, created = Webpage.objects.get_or_create(url=url, website=website)
         # update webpage content
@@ -96,8 +103,6 @@ def crawl_url(url, website, force=False):
                 webpage.delete()
                 return (None, False)
             except urllib2.HTTPError:  # urllib2 503 error
-                http_error_count += 1
-                print 'http_error_count is %s' % http_error_count
                 webpage.delete()
                 return (None, False)
         else: # Already have page
@@ -132,27 +137,29 @@ def get_links(html, website):
 # breadth-first recusive url search
 # input a domain and then get that and all subdomains
 # when first called, set base_url = current_url
-def crawl_url_subdomains(url, num_left=5):
+def crawl_url_subdomains(url, num_left=5, max_tries=1000):
     base_url = urlparse(url).netloc
     if base_url.startswith('www.'):  # dirty hack
         base_url = base_url[len('www.'):]
     website, created = Website.objects.get_or_create(url=base_url)
     if not base_url:
         raise ValueError('base_url cannot be blank')
-    print 'crawling url subdomains'
     links = [str(url)]
     i = 0
-    while(i < len(links) and num_left >= 0):
+    while(i < len(links) and num_left >= 0 and max_tries >= 0):
         print 'crawling recursive, i=%s of %s' % (i, len(links))
         print 'num_left=%s' % num_left
         webpage, updated = crawl_url(links[i], website, i==0)
         if updated:
-            time.sleep(1)  # randomize
-        if updated:
-            # TODO add sleep command here
+            time.sleep(0.5 + random())  # randomize
             num_left -= 1
         if webpage:
             html = webpage.content
-            links.extend(get_links(html, webpage.website))
+            new_links = get_links(html, webpage.website)
+            for link in new_links:  # poorly optomized
+                link = parse_url(link)
+                if link not in links:
+                    links.append(link)
         i += 1
+        max_tries -= 1
 

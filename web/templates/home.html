@@ -1,20 +1,19 @@
 <p>
     This the home template
 </p>
-{% if robots_last_updated and current_time %}
-    <p>
-        Robots last updated {{ robots_last_updated }}. It is now {{ current_time }}.
-    </p>
-{% endif %}
-<p>
-    {% if root %}
-        Root url is {{ root }}.
-    {% else %}
-        Could not find url.
-    {% endif %}
-</p>
 <form action="{% url 'home' %}" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit" />
 </form>
+<p>
+    {% if pages %}
+        {% for page in pages %}
+            <p>
+                <a href="{{ page.url }}">{{ page.url }}</a>
+            <p>
+        {% endfor %}
+    {% else %}
+        No pages available right now.
+    {% endif %}
+</p>
