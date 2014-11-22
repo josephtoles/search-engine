@@ -3,6 +3,7 @@ from django.db import models
 from datetime import datetime, timedelta, tzinfo
 from web.time_util import UTC
 from urlparse import urljoin
+import urllib2
 
 
 #############

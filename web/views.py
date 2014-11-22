@@ -1,3 +1,4 @@
+from management import commands
 from multiprocessing import Process
 from django.core.management import call_command
 from django.http import HttpResponse, HttpResponseRedirect
@@ -20,9 +21,9 @@ def home_view(request):
             url = form.cleaned_data['url']
 
             # crawl
-            p = Process(target=call_command, args = (url,))
-            # non-multithreaded version
-            # pages = crawl_url_subdomains(url, num_left=5)
+            # Very poorly managed. This should have some safety features
+            p = Process(target=call_command, args=('crawl_url_subdomains', url))
+            p.start()
 
             # get links
             try:
