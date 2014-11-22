@@ -17,7 +17,7 @@ class Website(models.Model):
     
 
 class Webpage(models.Model):
-    url = models.URLField(unique=True)  # full url
+    url = models.URLField()  # full or local url, I think
     robots_allowed = models.BooleanField()
     website = models.ForeignKey('Website')
     content = models.TextField()
@@ -26,4 +26,5 @@ class Webpage(models.Model):
 
     class Meta:
         ordering = ['url']
+        unique_together = ['url', 'website']
 

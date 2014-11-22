@@ -39,7 +39,11 @@ class UTC(tzinfo):
 def robots_txt_updated_recently(website):
     if not website.robots_updated:
         return False
-    return website.robots_updated + UPDATE_ROBOTS_TIME_DELTA > datetime.now(UTC())
+    try:
+        return website.robots_updated + UPDATE_ROBOTS_TIME_DELTA > datetime.now(UTC())
+    except TypeError:  # something to do with internal datetimes
+        print 'caught internal time error'
+        return False
         
 # update robots.txt if it's been a while since the last time.
 def update_robots_txt_if_necessary(website):
@@ -66,6 +70,7 @@ def crawl_url(url, website, force=False):
     rerp = RobotExclusionRulesParser()
     rerp.parse(website.robots_content)
     if rerp.is_allowed('*', '/foo.html'):
+        print 'trying website=%s and url=%s' % (website, url)
         webpage, created = Webpage.objects.get_or_create(url=url, website=website)
         # update webpage content
         if created or force or not crawled_recently(webpage):
