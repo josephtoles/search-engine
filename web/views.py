@@ -25,7 +25,9 @@ def home_view(request):
             #p = Process(target=call_command, args=('crawl_url_subdomains', url))
             #p.start()
             # you should really just create a seperate crawl command to search important domains. It should be running whenever the server is running
-            mark_to_crawl(url)
+            found = mark_to_crawl(url)
+            if not found:
+                context['not_found'] = 'Site not found'
             #crawl_url_subdomains(url)
 
             # get links
