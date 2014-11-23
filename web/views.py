@@ -6,7 +6,7 @@ from django.shortcuts import render, render_to_response
 from forms import URLForm
 from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext, loader
-from crawler import crawl_url, crawl_url_subdomains
+from crawler import crawl_url, crawl_url_subdomains, mark_to_crawl
 from models import Website, Webpage
 from urlparse import urlparse
 from datetime import datetime
@@ -25,7 +25,8 @@ def home_view(request):
             #p = Process(target=call_command, args=('crawl_url_subdomains', url))
             #p.start()
             # you should really just create a seperate crawl command to search important domains. It should be running whenever the server is running
-            crawl_url_subdomains(url)
+            mark_to_crawl(url)
+            #crawl_url_subdomains(url)
 
             # get links
             try:

@@ -57,6 +57,7 @@ class Webpage(models.Model):
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    last_human_request = models.DateTimeField(null=True, default=None)
 
     class Meta:
         ordering = ['url']

@@ -29,11 +29,20 @@ def url_is_valid(url):
         return False
     return True
 
+def mark_to_crawl(url):
+    base_url = urlparse(url).netloc
+    if base_url.startswith('www.'):  # dirty hack
+        base_url = base_url[len('www.'):]
+    website, created = Website.objects.get_or_create(url=base_url)
+    if not base_url:
+        raise ValueError('base_url cannot be blank')
+    webpage, updated = crawl_url(url, website, human_update=True)
+
 # add a single url to the database if necessary
 # returns a tuple (webpage, created)
 # where webpage is the webpage (None if not accessible)
 # and created is a boolean representing whether the webpage was actually fetched with this call
-def crawl_url(url, website, force=False):
+def crawl_url(url, website, force=False, human_update=False):
     website.update_robots_txt_if_necessary()
     rerp = RobotExclusionRulesParser()
     rerp.parse(website.robots_content)
@@ -41,8 +50,11 @@ def crawl_url(url, website, force=False):
         url = parse_url(url)
         if not url_is_valid(url):
             return (None, False)
-        print '\ntrying website=%s and url=%s' % (website, url)
+        print '\ntrying website=%s and url=%s' % (website.url, url)
         webpage, created = Webpage.objects.get_or_create(url=url, website=website)
+        if human_update:
+            webpage.last_human_request = datetime.now()
+            webpage.save()
         # update webpage content
         if created or force or not webpage.crawled_recently:
             print 'opening url %s' % url
