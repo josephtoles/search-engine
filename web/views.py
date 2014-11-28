@@ -14,6 +14,9 @@ from urlparse import urlparse
 from datetime import datetime
 
 
+def mark_view(request):
+    return HttpResponseRedirect(reverse('home'))
+
 def home_view(request):
     context = {}
     context['user'] = request.user
