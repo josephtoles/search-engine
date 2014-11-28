@@ -33,7 +33,7 @@ workon search
 
 6. Install the requirements
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 7. Sync the database

@@ -4,10 +4,15 @@ machine:
 #database:
 #  pre:
 #    - cp speedrate/circle_settings.py speedrate/local_settings.py
+dependencies:
+  pre:
+    - pip install -r requirements.txt
+'''
 test:
   post:
     - python setup.py set_version
     - rm dist/*
     - python setup.py sdist
     - cp dist/* $CIRCLE_ARTIFACTS
+'''
 
