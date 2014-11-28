@@ -16,6 +16,7 @@ from datetime import datetime
 
 def home_view(request):
     context = {}
+    context['user'] = request.user
     if request.method == 'POST':
         form = URLForm(request.POST)
         if form.is_valid():
