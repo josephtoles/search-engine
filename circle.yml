@@ -1,9 +1,9 @@
 machine:
   python:
     version: 2.7.3
-database:
-  pre:
-    - cp speedrate/circle_settings.py speedrate/local_settings.py
+#database:
+#  pre:
+#    - cp speedrate/circle_settings.py speedrate/local_settings.py
 test:
   post:
     - python setup.py set_version
