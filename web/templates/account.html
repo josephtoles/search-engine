@@ -9,8 +9,7 @@
 </p>
 <p>
     Create a new search.
-    {#
-    <form action="{% url 'TODO' %}" method="post">
+    <form action="{% url 'home' %}" method="post"> {# not actually home #}
         {% csrf_token %}
         {{ form }}
         <input type="submit" value="Submit" />
