@@ -1,3 +1,7 @@
 db.sqlite3
 *.pyc
 *.swp
+search/.Python
+search/bin/
+search/include/
+search/lib/
