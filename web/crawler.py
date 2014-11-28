@@ -33,7 +33,7 @@ def mark_to_crawl(url):
     base_url = urlparse(url).netloc
     if base_url.startswith('www.'):  # dirty hack
         base_url = base_url[len('www.'):]
-    website, created = Website.objects.get_or_create(url=base_url)
+    website, created = Website.objects.get_or_create(url=base_url, defaults={'robots_updated': datetime.now()})
     if not base_url:
         raise ValueError('base_url cannot be blank')
     webpage, updated = crawl_url(url, website)
