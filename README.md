@@ -87,6 +87,16 @@ To manually crawl a url
 To create a superuser
     ./manage.py createsuperuser
 
+
+Migrations
+----------
+
+Whenever you modify a model you will need to create a migration using
+    ./manage.py makemigrations
+
+Then everyone with a database will need to run manually
+    ./manage.py migrate
+
 Troubleshooting
 ---------------
 

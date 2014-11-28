@@ -14,10 +14,16 @@ from models import Website, Webpage
 from urlparse import urlparse
 from datetime import datetime
 from django.shortcuts import redirect
+from models import Search
 
 def account_view(request):
     print 'calling account_view'
-    context = {'user': request.user}
+    context = {}
+    context['user'] = request.user
+    #context['searches'] = Search.objects.filter(owner=request.user).all()
+    context['searches'] = Search.objects.all()
+    for search in Search.objects.all():
+        print search.created
     return render_to_response('account.html', context, RequestContext(request))
 
 def home_view(request):
