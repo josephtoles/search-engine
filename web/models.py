@@ -21,12 +21,12 @@ class Website(models.Model):
     url = models.URLField(unique=True, blank=False)  # netloc in urlparse
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    exists = models.BooleanField()
+    exists = models.BooleanField(null=False, default=False, blank=True)
 
     # robots.txt
-    robots_exists = models.BooleanField()
+    robots_exists = models.BooleanField(null=False, default=False)
     robots_content = models.TextField()
-    robots_updated = models.DateTimeField(null=True)
+    robots_updated = models.DateTimeField()
 
     class Meta:
         ordering = ['url']
@@ -52,7 +52,7 @@ class Website(models.Model):
 
 class Webpage(models.Model):
     url = models.URLField()  # full or local url, I think
-    robots_allowed = models.BooleanField()
+    robots_allowed = models.BooleanField(null=False, default=True)
     website = models.ForeignKey('Website')
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
