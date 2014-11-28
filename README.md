@@ -40,6 +40,7 @@ pip install -r requirements.txt
 ```
 ./manage.py syncdb
 ```
+This may ask you to create a superuser. It doesn't really matter if you do.
 
 8. Run the server
 ```
@@ -77,10 +78,11 @@ To run the crawler, run
 Extra Commands
 --------------
 
-To manually creawl a url, use the command
-    ./manage.py crawl_url_subdomains http://website.com/
-Or similar
+To manually creawl a url
+    ./manage.py crawl_url_subdomains <http://website.com/>
 
+To create a superuser
+    ./manage.py createsuperuser
 
 Troubleshooting
 ---------------
