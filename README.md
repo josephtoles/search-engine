@@ -61,15 +61,32 @@ Quit the server with CONTROL-C.
 Running Server
 --------------
 
-This is a search engine.
+Two commands are necessary to run the server properly
 
+To run the web interface run
+```
+./manage.py runserver
+```
+
+To run the crawler, run
+```
+./manage.py auto_crawl
+```
+
+
+Extra Commands
+--------------
 
 To manually creawl a url, use the command
     ./manage.py crawl_url_subdomains http://website.com/
 Or similar
 
 
-To run this code you need to run two commands
-    ./manage.py runserver  # runs the server
-    ./manage.py auto_crawl # runs the crawler
+Troubleshooting
+---------------
 
+If the database doesn't work, try running
+```
+./manage.py syncdb
+```
+This could be caused whenever anyone commits a change to the underlying models
