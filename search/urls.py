@@ -8,6 +8,7 @@ import web.views
 urlpatterns = [
     # Examples:
     url(r'^$', web.views.home_view, name='home'),
+    url(r'^login/$', web.views.login_view, name='login'),
 
     # url(r'^$', 'search.views.home', name='home'),
     # url(r'^search/', include('search.foo.urls')),

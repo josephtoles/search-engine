@@ -4,6 +4,9 @@
     <input type="submit" value="Submit" />
 </form>
 <p>
+    <a href="{% url 'login' %}">login</a>
+</p>
+<p>
     {% if pages %}
         {% for page in pages %}
             <p>
