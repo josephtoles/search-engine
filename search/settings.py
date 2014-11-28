@@ -168,3 +168,7 @@ LOGGING = {
         },
     }
 }
+
+# Suppress test warnings
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
