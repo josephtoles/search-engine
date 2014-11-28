@@ -14,8 +14,9 @@ from urlparse import urlparse
 from datetime import datetime
 
 
-def mark_view(request):
-    return HttpResponseRedirect(reverse('home'))
+def account_view(request):
+    contest = {'user': request.user}
+    return render_to_response('account.html', context, RequestContext(request))
 
 def home_view(request):
     context = {}
@@ -67,8 +68,8 @@ def login_view(request):
                 if user.is_active:
                     # Redirect to a success page.
                     login(request, user)
-                    return render_to_response('logged_in.html', {
-                        'username': username,
+                    return render_to_response('account.html', {
+                        'user': request.user,
                     }, RequestContext(request))
                 else:
                     # Return a 'disabled account' error message
