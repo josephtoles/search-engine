@@ -15,7 +15,7 @@ from datetime import datetime
 
 
 def account_view(request):
-    contest = {'user': request.user}
+    context = {'user': request.user}
     return render_to_response('account.html', context, RequestContext(request))
 
 def home_view(request):
