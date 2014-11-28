@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from management import commands
 from multiprocessing import Process
@@ -12,9 +13,10 @@ from crawler import crawl_url, crawl_url_subdomains, mark_to_crawl
 from models import Website, Webpage
 from urlparse import urlparse
 from datetime import datetime
-
+from django.shortcuts import redirect
 
 def account_view(request):
+    print 'calling account_view'
     context = {'user': request.user}
     return render_to_response('account.html', context, RequestContext(request))
 
@@ -68,9 +70,12 @@ def login_view(request):
                 if user.is_active:
                     # Redirect to a success page.
                     login(request, user)
+                    return redirect(reverse('account'))
+                    '''
                     return render_to_response('account.html', {
                         'user': request.user,
                     }, RequestContext(request))
+                    '''
                 else:
                     # Return a 'disabled account' error message
                     error = u'account disabled'
