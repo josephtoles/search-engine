@@ -5,8 +5,21 @@
     Your name is {{ user.username }}.
 </p>
 <p>
-    You have {{ searches.count }}.
+    You have {{ searches.count }} saved searches.
 </p>
+<p>
+    Create a new search.
+    <form action="{% url 'TODO' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit" />
+    </form>
+</p>
+{% for search in searches %}
+    <p>
+        This is a search instance
+    </p>
+{% endfor %}
 <p>
     <a href={% url 'home' %}>Home</a>
 </p>
