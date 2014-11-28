@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from django.db import models
+from django.contrib.auth.models import User
 from datetime import datetime, timedelta, tzinfo
 from web.time_util import UTC
 from urlparse import urljoin
@@ -22,6 +23,7 @@ class Search(models.Model):
     webpages = models.ManyToManyField('Webpage', through='WebpageRating')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    owner = models.ForeignKey(User)
 
 class WebpageRating(models.Model):
     webpage = models.ForeignKey('Webpage')
