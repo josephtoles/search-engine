@@ -78,7 +78,10 @@ To run the crawler, run
 Extra Commands
 --------------
 
-To manually creawl a url
+To run all unit tests
+    ./manage.py test
+
+To manually crawl a url
     ./manage.py crawl_url_subdomains <http://website.com/>
 
 To create a superuser
