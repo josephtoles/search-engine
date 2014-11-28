@@ -40,7 +40,10 @@ pip install -r requirements.txt
 ```
 ./manage.py syncdb
 ```
-This may ask you to create a superuser. It doesn't really matter if you do.
+If you choose not to create a superuser when prompted you can create one later with
+```
+./manage.py createsuperuser
+```
 
 8. Run the server
 ```
