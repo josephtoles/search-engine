@@ -17,6 +17,17 @@ UPDATE_WEBPAGE_TIME_DELTA = timedelta(days=1)
 # MODELS #
 ##########
 
+class Search(models.Model):
+    website = models.ForeignKey('Website')
+    webpages = models.ManyToManyField('Webpage', through='WebpageRating')
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+class WebpageRating(models.Model):
+    webpage = models.ForeignKey('Webpage')
+    search = models.ForeignKey('Search')
+    rating = models.IntegerField()  # 1 is good, -1 is bad
+
 class Website(models.Model):
     url = models.URLField(unique=True, blank=False)  # netloc in urlparse
     created = models.DateTimeField(auto_now_add=True)
