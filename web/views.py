@@ -24,19 +24,26 @@ def search_view(request):
 
 
 def account_view(request):
+    context = {}
+    context['user'] = request.user
     # Search
     if request.method == 'POST':
         form = SearchForm(request.POST)
-        if form.is_valid():
-            search = Search.objects.create(
-                url=form.cleaned_data['url'],
-                title=form.cleaned_data['title'],
-                owner=request.user)
-            search.save()
-            # redirect to proper search
-            return redirect(reverse('search'))
-    context = {}
-    context['user'] = request.user
+        if request.user.is_authenticated():
+            if form.is_valid():
+                search = Search.objects.create(
+                    url=form.cleaned_data['url'],
+                    title=form.cleaned_data['title'],
+                    owner=request.user)
+                search.save()
+                # redirect to proper search
+                return redirect(reverse('search'))
+            else:
+                # return form errors
+                return render_to_response('account.html', context, RequestContext(request))
+        else:
+            # permissions should make this impossible
+            return render_to_response('account.html', context, RequestContext(request))
     context['search_form'] = SearchForm()
     #context['searches'] = Search.objects.filter(owner=request.user).all()
     context['searches'] = Search.objects.all()
