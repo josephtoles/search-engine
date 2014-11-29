@@ -15,9 +15,14 @@
         <input type="submit" value="Submit" />
     </form>
 </p>
+<p>
+    Your searches
+</p>
 {% for search in searches %}
     <p>
-        This is a search instance
+        <a href="{% url 'search' search.id %}">{{ search.title }}</a>
+        <br>
+        {{ search.url }}
     </p>
 {% endfor %}
 <p>
