@@ -19,7 +19,7 @@ UPDATE_WEBPAGE_TIME_DELTA = timedelta(days=1)
 ##########
 
 class Search(models.Model):
-    website = models.ForeignKey('Website')
+    url = models.URLField()
     webpages = models.ManyToManyField('Webpage', through='WebpageRating')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

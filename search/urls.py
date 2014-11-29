@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^$', web.views.home_view, name='home'),
     url(r'^login/$', web.views.login_view, name='login'),
     url(r'^account/$', web.views.account_view, name='account'),
+    url(r'^search/$', web.views.search_view, name='search'),
 
     # url(r'^$', 'search.views.home', name='home'),
     # url(r'^search/', include('search.foo.urls')),

@@ -6,7 +6,7 @@ from multiprocessing import Process
 from django.core.management import call_command
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
-from forms import URLForm, LoginForm
+from forms import URLForm, LoginForm, SearchForm
 from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext, loader
 from crawler import crawl_url, crawl_url_subdomains, mark_to_crawl
@@ -16,10 +16,28 @@ from datetime import datetime
 from django.shortcuts import redirect
 from models import Search
 
+
+# The View corresponding to an individual's search
+def search_view(request):
+    context = {}
+    return render_to_response('search.html', context, RequestContext(request))
+
+
 def account_view(request):
-    print 'calling account_view'
+    # Search
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            search = Search.objects.create(
+                url=form.cleaned_data['url'],
+                title=form.cleaned_data['title'],
+                owner=request.user)
+            search.save()
+            # redirect to proper search
+            return redirect(reverse('search'))
     context = {}
     context['user'] = request.user
+    context['search_form'] = SearchForm()
     #context['searches'] = Search.objects.filter(owner=request.user).all()
     context['searches'] = Search.objects.all()
     for search in Search.objects.all():
