@@ -18,13 +18,19 @@
 <p>
     Your searches
 </p>
-{% for search in searches %}
+{% if searches %}
+    {% for search in searches %}
+        <p>
+            <a href="{% url 'search' search.id %}">{{ search.title }}</a>
+            <br>
+            {{ search.url }}
+        </p>
+    {% endfor %}
+{% else %}
     <p>
-        <a href="{% url 'search' search.id %}">{{ search.title }}</a>
-        <br>
-        {{ search.url }}
+        You have not created any searches yet.
     </p>
-{% endfor %}
+{% endif %}
 <p>
     <a href={% url 'home' %}>Home</a>
 </p>
