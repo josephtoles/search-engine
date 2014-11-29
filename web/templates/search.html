@@ -1,0 +1,39 @@
+<p>
+    This is the search template
+</p>
+<p>
+    {% if user.is_authenticated %}
+        You are logged in as {{ user.username }}. Go to <a href="{% url 'account' %}">my account</a>. Go <a href="{% url 'home' %}">home</a>.
+    {% else %}
+        <p>
+            <a href="{% url 'login' %}">login</a>
+        </p>
+    {% endif %}
+</p>
+<p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit" />
+    </form>
+</p>
+<p>
+    {% if pages %}
+        {% for page in pages %}
+            <p>
+                <a href="TODO">:)</a>
+                {{ page.get_title }}
+                <br>
+                <a href="TODO">:(</a>
+                <a href="{{ page.full_url }}">{{ page.full_url }}</a>
+            <p>
+        {% endfor %}
+    {% else %}
+        No pages available right now.
+    {% endif %}
+</p>
+{% if not_found %}
+    <p>
+        {{ not_found }}
+    <p>
+{% endif %}
