@@ -15,12 +15,17 @@ from urlparse import urlparse
 from datetime import datetime
 from django.shortcuts import redirect
 from models import Search
+from django.http import Http404
 
 
 # The View corresponding to an individual's search
-def search_view(request):
-    context = {}
-    return render_to_response('search.html', context, RequestContext(request))
+def search_view(request, id):
+    try:
+        search = Search.objects.get(id=id)
+        context = {'search': search}
+        return render_to_response('search.html', context, RequestContext(request))
+    except Search.DoesNotExist:
+        raise Http404
 
 
 def account_view(request):
