@@ -11,8 +11,8 @@ import urllib2
 # CONSTANTS #
 #############
 
-UPDATE_ROBOTS_TIME_DELTA = timedelta(days=1)  # How frequently robotx.txt is updated
-UPDATE_WEBPAGE_TIME_DELTA = timedelta(days=1) # How frequently webpages are updated
+UPDATE_ROBOTS_TIME_DELTA = timedelta(days=5)  # How frequently robotx.txt is updated
+UPDATE_WEBPAGE_TIME_DELTA = timedelta(days=4) # How frequently webpages are updated
 
 ##########
 # MODELS #
