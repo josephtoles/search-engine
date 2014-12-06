@@ -1,6 +1,6 @@
 # from django.test import TestCase
 from utils.testcase import TestCase
-from web.models import Search
+from brain.models import Search
 
 
 class SimpleTest(TestCase):
