@@ -6,7 +6,7 @@ import urllib2
 from robotexclusionrulesparser import RobotExclusionRulesParser
 from urlparse import urlparse, urljoin
 from datetime import datetime, timedelta, tzinfo
-from web.models import Website, Webpage
+from models import Website, Webpage
 from web.time_util import UTC
 
 # custom django commands

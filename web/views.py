@@ -14,7 +14,7 @@ from crawler.models import Website, Webpage
 from urlparse import urlparse
 from datetime import datetime
 from django.shortcuts import redirect
-from models import Search
+from brain.models import Search
 from django.http import Http404
 
 

@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'web',
     'crawler',
+    'brain',
     'utils',
     'django.contrib.admin',  # built-in admin
     # Uncomment the next line to enable admin documentation:
