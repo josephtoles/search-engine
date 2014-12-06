@@ -122,11 +122,10 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'south',
     'web',
+    'crawler',
     'utils',
-    # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
+    'django.contrib.admin',  # built-in admin
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

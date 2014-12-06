@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from web.crawler import crawl_url_subdomains
+from crawler.crawler import crawl_url_subdomains
 from web.models import Webpage
 
 class Command(BaseCommand):
