@@ -13,11 +13,14 @@ class SimpleTest(TestCase):
 class ModelTest(TestCase):
 
     def test_create_search(self):
+        URL = 'amazon.com'
+        TITLE = 'Search the Amazon'
         search = Search.objects.create(
-            url='amazon.com',
-            title='Search the Amazon',
+            url=URL,
+            title=TITLE,
             # no webpages
             owner = self.user)
-        search.save()
+        self.assertEqual(Search.objects.count(), 1)
+        self.assertEqual(search.url, URL)
+        self.assertEqual(search.title, TITLE)
 
-        
