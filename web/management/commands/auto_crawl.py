@@ -8,9 +8,12 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
-        while True:
-            source_pages = Webpage.objects.order_by('-last_human_request').all()
-            webpage = source_pages[0]  # do something more sophisticated than grant the last request
-            print 'webpage is a %s' % type(webpage)
-            crawl_url_subdomains(webpage.full_url)
+        if Webpage.objects.order_by('-last_human_request'):
+            while True:
+                source_pages = Webpage.objects.order_by('-last_human_request').all()
+                webpage = source_pages[0]  # do something more sophisticated than grant the last request
+                print 'webpage is a %s' % type(webpage)
+                crawl_url_subdomains(webpage.full_url)
+        else:
+            print 'No pages to search'
         
