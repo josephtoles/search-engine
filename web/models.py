@@ -11,13 +11,14 @@ import urllib2
 # CONSTANTS #
 #############
 
-UPDATE_ROBOTS_TIME_DELTA = timedelta(days=1)
-UPDATE_WEBPAGE_TIME_DELTA = timedelta(days=1)
+UPDATE_ROBOTS_TIME_DELTA = timedelta(days=1)  # How frequently robotx.txt is updated
+UPDATE_WEBPAGE_TIME_DELTA = timedelta(days=1) # How frequently webpages are updated
 
 ##########
 # MODELS #
 ##########
 
+# Model defining a search
 class Search(models.Model):
     url = models.URLField()
     title = models.CharField(max_length=100)
@@ -26,11 +27,13 @@ class Search(models.Model):
     updated = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey(User)
 
+# Model of a user's evaluation of a webpage
 class WebpageRating(models.Model):
     webpage = models.ForeignKey('Webpage')
     search = models.ForeignKey('Search')
     rating = models.IntegerField()  # 1 is good, -1 is bad
 
+# Stores information unique to a root domain
 class Website(models.Model):
     url = models.URLField(unique=True, blank=False)  # netloc in urlparse
     created = models.DateTimeField(auto_now_add=True)
@@ -40,7 +43,7 @@ class Website(models.Model):
     # robots.txt
     robots_exists = models.BooleanField(null=False, default=False)
     robots_content = models.TextField()
-    robots_updated = models.DateTimeField()
+    robots_updated = models.DateTimeField()  # null iff robots.txt has never been called
 
     class Meta:
         ordering = ['url']
@@ -51,19 +54,20 @@ class Website(models.Model):
             return False
         try:
             return datetime.now() - self.robots_updated < UPDATE_ROBOTS_TIME_DELTA
-        except TypeError:  # something to do with internal datetimes
+        except TypeError:  # TODO figure out why this is necessary
             return datetime.now(UTC()) - self.robots_updated < UPDATE_ROBOTS_TIME_DELTA
 
     # update robots.txt if it's been a while since the last time.
-    def update_robots_txt_if_necessary(self):
+    def update_robots_txt(self):
         if not self.robots_txt_updated_recently:
-            robots_url = urljoin('http://' + self.url, 'robots.txt')
+            robots_url = urljoin('http://' + self.url, 'robots.txt')  # TODO do this cleaner
             response = urllib2.urlopen(robots_url)
             html = response.read()
             self.robots_content = html
             self.robots_updated = datetime.now()
             self.save()
 
+# Stores a particular webpage downloaded from the internet
 class Webpage(models.Model):
     url = models.URLField()  # full or local url, I think
     robots_allowed = models.BooleanField(null=False, default=True)
@@ -88,7 +92,7 @@ class Webpage(models.Model):
 
     @property
     def full_url(self):
-        # Cheap hack. You should do this properly instead.
+        # Cheap hack. TODO do this properly
         if self.url.startswith('/'):
             return 'http://www.' + self.website.url + self.url
         return self.url

@@ -46,7 +46,7 @@ def mark_to_crawl(url):
 # where webpage is the webpage (None if not accessible)
 # and created is a boolean representing whether the webpage was actually fetched with this call
 def crawl_url(url, website, force=False):
-    website.update_robots_txt_if_necessary()
+    website.update_robots_txt()
     rerp = RobotExclusionRulesParser()
     rerp.parse(website.robots_content)
     if rerp.is_allowed('*', '/foo.html'):
