@@ -50,7 +50,13 @@ export PGDATA="/usr/local/var/postgres"
 ```
 to your ~/.bash_profile
 
-8. Sync the database
+8. Create your postgres database
+To do this, run psql, then type the SQL command
+    CREATE DATABASE postgres;
+Then quit psql with \q
+This database should really be called "search" and not "postgres". This is a bug.
+
+9. Sync the database
 ```
 ./manage.py syncdb
 ```
@@ -59,7 +65,7 @@ If you choose not to create a superuser when prompted you can create one later w
 ./manage.py createsuperuser
 ```
 
-9. Run the server
+10. Run the server
 ```
 ./manage.py runserver
 ```
@@ -73,7 +79,7 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
 
-10. Now open up a web browser and go to http://127.0.0.1:8000/. This should bring you to the search engine homepage.
+11. Now open up a web browser and go to http://127.0.0.1:8000/. This should bring you to the search engine homepage.
 
 
 Running Server
