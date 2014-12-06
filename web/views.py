@@ -10,7 +10,7 @@ from forms import URLForm, LoginForm, SearchForm
 from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext, loader
 from crawler import crawl_url, crawl_url_subdomains, mark_to_crawl
-from models import Website, Webpage
+from crawler.models import Website, Webpage
 from urlparse import urlparse
 from datetime import datetime
 from django.shortcuts import redirect
