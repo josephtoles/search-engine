@@ -28,7 +28,7 @@ class Website(models.Model):
     # robots.txt
     robots_exists = models.BooleanField(null=False, default=False)
     robots_content = models.TextField()
-    robots_updated = models.DateTimeField()  # null iff robots.txt has never been called
+    robots_updated = models.DateTimeField(null=True)  # null iff robots.txt has never been called
 
     class Meta:
         ordering = ['url']
