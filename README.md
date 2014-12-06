@@ -36,7 +36,21 @@ workon search
 pip install -r requirements.txt
 ```
 
-7. Sync the database
+7. Install postgres
+```
+git push --set-upstream origin postgres
+```
+Then run postgres with the command
+```
+postgres
+```
+You may need to add
+```
+export PGDATA="/usr/local/var/postgres"
+```
+to your ~/.bash_profile
+
+8. Sync the database
 ```
 ./manage.py syncdb
 ```
@@ -45,7 +59,7 @@ If you choose not to create a superuser when prompted you can create one later w
 ./manage.py createsuperuser
 ```
 
-8. Run the server
+9. Run the server
 ```
 ./manage.py runserver
 ```
@@ -59,13 +73,18 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
 
-9. Now open up a web browser and go to http://127.0.0.1:8000/. This should bring you to the search engine homepage.
+10. Now open up a web browser and go to http://127.0.0.1:8000/. This should bring you to the search engine homepage.
 
 
 Running Server
 --------------
 
-Two commands are necessary to run the server properly
+Three commands are necessary to run the server properly
+
+To run the postgres database, call
+```
+postgres
+```
 
 To run the web interface run
 ```
@@ -89,6 +108,9 @@ To manually crawl a url
 
 To create a superuser
     ./manage.py createsuperuser
+
+To mess with the PostgreSQL database (Help is "\?")
+    psql
 
 
 Migrations
