@@ -85,16 +85,19 @@ To run the postgres database, call
 ```
 postgres
 ```
+This does not require you to be in your virtual environment.
 
 To run the web interface run
 ```
 ./manage.py runserver
 ```
+This requires you to be in your virtual environment.
 
 To run the crawler, run
 ```
 ./manage.py auto_crawl
 ```
+This requires you to be in your virtual environment.
 
 
 Extra Commands
