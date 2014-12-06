@@ -35,7 +35,7 @@ def mark_to_crawl(url):
         base_url = base_url[len('www.'):]
     website, created = Website.objects.get_or_create(url=base_url, defaults={'robots_updated': datetime.now()})
     if not base_url:
-        raise ValueError('base_url cannot be blank')
+        raise ValueError('base_url cannot be blank. (url is {url})'.format(url=url))
     webpage, updated = crawl_url(url, website)
     webpage.last_human_request = datetime.now()
     webpage.save()
@@ -115,7 +115,7 @@ def crawl_url_subdomains(url, num_left=5, max_tries=1000):
         base_url = base_url[len('www.'):]
     website, created = Website.objects.get_or_create(url=base_url)
     if not base_url:
-        raise ValueError('base_url cannot be blank')
+        raise ValueError('base_url cannot be blank. (url is {url})'.format(url=url))
     links = [str(url)]
     i = 0
     while(i < len(links) and num_left >= 0 and max_tries >= 0):
