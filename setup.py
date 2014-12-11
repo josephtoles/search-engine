@@ -1,24 +1,86 @@
-from setuptools.command.test import test as TestCommand
-import sys
+from setuptools import setup, find_packages, Command
+import os
+import subprocess
 
-class Tox(TestCommand):
-    user_options = [('tox-args=', 'a', "Arguments to pass to tox")]
+
+def get_version():
+    try:
+        from speedrate._version import get_version as get
+        return get()
+    except ImportError:
+        return 'dev'
+
+
+_VERSION = """
+# search engine version information
+
+_build = '%(build)s'
+_branch = '%(branch)s'
+_commit = '%(commit)s'
+
+
+def get_version():
+    return '-'.join([_build, _branch, _commit])
+
+
+def get_version_url():
+    if _build != 'dev':
+        return 'https://circleci.com/gh/https://github.com/josephtoles/search-engine/tree/tox/' + _build
+        """
+
+class SetVersion(Command):
+    description = 'Writes version information'
+    user_options = []
+    boolean_options = []
+
     def initialize_options(self):
-        TestCommand.initialize_options(self)
-        self.tox_args = None
+        pass
+
     def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-    def run_tests(self):
-        #import here, cause outside the eggs aren't loaded
-        import tox
-        import shlex
-        errno = tox.cmdline(args=shlex.split(self.tox_args))
-        sys.exit(errno)
+        pass
+
+    def _git(self, cmd):
+        return subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0].strip()
+
+    def run(self):
+        branch = os.environ.get('CIRCLE_BRANCH') or self._git(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
+        branch = branch.replace('/', '-')
+        build_num = os.environ.get('CIRCLE_BUILD_NUM') or 'dev'
+        commit = os.environ.get('CIRCLE_SHA1') or self._git(['git', 'rev-parse', '--verify', 'HEAD'])
+        with open('speedrate/_version.py', 'w+') as f:
+            f.write(_VERSION % {
+                'build': build_num,
+                'branch': branch,
+                'commit': commit
+            })
+
+
+class Version(Command):
+    description = 'Prints version information'
+    user_options = []
+    boolean_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        print get_version()
+
 
 setup(
-    #...,
-    tests_require=['tox'],
-    cmdclass = {'test': Tox},
-    )
+    name='search engine',
+    version=get_version(),
+    packages=find_packages(),
+    url='All rights reserved.',
+    license='',
+    author='Joseph Toles & team',
+    author_email='jbtoles@gmail.com',
+    description='',
+    include_package_data=True,
+    cmdclass={
+        "set_version": SetVersion, "version": Version
+    }
+)
