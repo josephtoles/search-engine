@@ -19,8 +19,7 @@ class ModelTest(TestCase):
             url=URL,
             title=TITLE,
             # no webpages
-            owner = self.user)
+            owner=self.user)
         self.assertEqual(Search.objects.count(), 1)
         self.assertEqual(search.url, URL)
         self.assertEqual(search.title, TITLE)
-

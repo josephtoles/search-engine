@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 from django.db import models
-from django.contrib.auth.models import User
-from datetime import datetime, timedelta, tzinfo
+from datetime import datetime, timedelta
 from web.time_util import UTC
 from urlparse import urljoin
 import urllib2
@@ -12,11 +11,12 @@ import urllib2
 #############
 
 UPDATE_ROBOTS_TIME_DELTA = timedelta(days=5)  # How frequently robotx.txt is updated
-UPDATE_WEBPAGE_TIME_DELTA = timedelta(days=4) # How frequently webpages are updated
+UPDATE_WEBPAGE_TIME_DELTA = timedelta(days=4)  # How frequently webpages are updated
 
 ##########
 # MODELS #
 ##########
+
 
 # Stores information unique to a root domain
 class Website(models.Model):
@@ -32,7 +32,7 @@ class Website(models.Model):
 
     class Meta:
         ordering = ['url']
-    
+
     @property
     def robots_txt_updated_recently(self):
         if not self.robots_updated:
@@ -51,6 +51,7 @@ class Website(models.Model):
             self.robots_content = html
             self.robots_updated = datetime.now()
             self.save()
+
 
 # Stores a particular webpage downloaded from the internet
 class Webpage(models.Model):
@@ -81,4 +82,3 @@ class Webpage(models.Model):
         if self.url.startswith('/'):
             return 'http://www.' + self.website.url + self.url
         return self.url
-

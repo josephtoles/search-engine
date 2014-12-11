@@ -1,6 +1,7 @@
 from utils.testcase import TestCase
 from models import Website
 
+
 class CrawlerTest(TestCase):
 
     def test_create_website_model(self):
@@ -14,4 +15,3 @@ class CrawlerTest(TestCase):
         Website.objects.create(url='')
         self.assertEqual(Website.objects.count(), 0)
     '''
-

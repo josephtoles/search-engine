@@ -1,5 +1,5 @@
-from django.core.management.base import BaseCommand, CommandError
-from crawler.crawler import crawl_url_subdomains
+from django.core.management.base import BaseCommand
+
 
 class Command(BaseCommand):
 
@@ -8,4 +8,3 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print 'you have hit handle in command_test'
-
