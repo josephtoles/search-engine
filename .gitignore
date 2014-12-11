@@ -5,3 +5,7 @@ search/.Python
 search/bin/
 search/include/
 search/lib/
+.idea/.name
+.idea/workspace.xml
+.tox/
+search_engine.egg-info/
