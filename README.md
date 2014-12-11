@@ -112,6 +112,9 @@ Extra Commands
 To run all unit tests
     ./manage.py test
 
+To run flake8
+    tox
+
 To manually crawl a url
     ./manage.py crawl_url_subdomains <http://website.com/>
 
