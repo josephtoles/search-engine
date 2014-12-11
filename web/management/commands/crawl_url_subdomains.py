@@ -1,5 +1,6 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from crawler.crawler import crawl_url_subdomains
+
 
 class Command(BaseCommand):
 
@@ -10,5 +11,3 @@ class Command(BaseCommand):
         print 'you have hit crawl_url_subdomains'
         print 'args are %s' % str(args)
         crawl_url_subdomains(url=args[0])
-        
-

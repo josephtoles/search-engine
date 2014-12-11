@@ -1,13 +1,11 @@
-import robotexclusionrulesparser
 from random import random
 import time
 from bs4 import BeautifulSoup
 import urllib2
 from robotexclusionrulesparser import RobotExclusionRulesParser
 from urlparse import urlparse, urljoin
-from datetime import datetime, timedelta, tzinfo
+from datetime import datetime
 from models import Website, Webpage
-from web.time_util import UTC
 
 # custom django commands
 # https://docs.djangoproject.com/en/dev/howto/custom-management-commands/
@@ -24,10 +22,12 @@ from web.time_util import UTC
 def parse_url(url):
     return urlparse(url).path
 
+
 def url_is_valid(url):
     if '(' in url or ')' in url:  # quick hack to avoid what seems to be a JavaScript function
         return False
     return True
+
 
 def mark_to_crawl(url):
     base_url = urlparse(url).netloc
@@ -40,6 +40,7 @@ def mark_to_crawl(url):
     webpage.last_human_request = datetime.now()
     webpage.save()
     return webpage  # returns None if webpage not found
+
 
 # add a single url to the database if necessary
 # returns a tuple (webpage, created)
@@ -63,7 +64,6 @@ def crawl_url(url, website, force=False):
             try:
                 response = urllib2.urlopen(url)
                 html = response.read()
-                #webpage.content = str(html)  # 8-bit to unicode
                 webpage.content = unicode(html, 'unicode-escape')
                 webpage.save()
                 updated = True
@@ -76,12 +76,13 @@ def crawl_url(url, website, force=False):
             except urllib2.HTTPError:  # urllib2 503 error
                 webpage.delete()
                 return (None, False)
-        else: # Already have page
+        else:  # Already have page
             updated = False
         return (webpage, updated)
     else:
         Webpage.objects.filter(url=url).delete()
         return (None, False)
+
 
 # get links from a block of html
 def get_links(html, website):
@@ -90,8 +91,8 @@ def get_links(html, website):
     links = soup.find_all('a')
 
     for tag in links:
-        link = tag.get('href',None)
-        if link != None:
+        link = tag.get('href', None)
+        if link is not None:  # must handle '' and None differently
             urls.append(link)
 
     # remove external links to other websites
@@ -102,8 +103,9 @@ def get_links(html, website):
         if netloc and netloc != website.url:
             del(urls[i])
 
-    # TODO 
+    # TODO more code goes here
     return urls
+
 
 # breadth-first recusive url search
 # input a domain and then get that and all subdomains
@@ -121,7 +123,7 @@ def crawl_url_subdomains(url, num_left=5, max_tries=1000):
     while(i < len(links) and num_left >= 0 and max_tries >= 0):
         print 'crawling recursive, i=%s of %s, max_tries=%s' % (i, len(links), max_tries)
         print 'num_left=%s' % num_left
-        webpage, updated = crawl_url(links[i], website, i==0)
+        webpage, updated = crawl_url(links[i], website, i == 0)
         if updated:
             time.sleep(0.5 + random())  # randomize
             num_left -= 1
@@ -134,4 +136,3 @@ def crawl_url_subdomains(url, num_left=5, max_tries=1000):
                     links.append(link)
         i += 1
         max_tries -= 1
-

@@ -26,7 +26,8 @@ def get_version():
 def get_version_url():
     if _build != 'dev':
         return 'https://circleci.com/gh/https://github.com/josephtoles/search-engine/tree/tox/' + _build
-        """
+"""
+
 
 class SetVersion(Command):
     description = 'Writes version information'

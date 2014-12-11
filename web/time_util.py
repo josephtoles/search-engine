@@ -1,15 +1,19 @@
-from datetime import datetime, timedelta, tzinfo
+from datetime import timedelta, tzinfo
 
 #####################
 # TIMEZONE HANDLING #
 #####################
 
-ZERO = timedelta(0)
-class UTC(tzinfo):
-  def utcoffset(self, dt):
-    return ZERO
-  def tzname(self, dt):
-    return "UTC"
-  def dst(self, dt):
-    return ZERO
+DELTA_ZERO = timedelta(0)
 
+
+class UTC(tzinfo):
+
+    def utcoffset(self, dt):
+        return DELTA_ZERO
+
+    def tzname(self, dt):
+        return "UTC"
+
+    def dst(self, dt):
+        return DELTA_ZERO

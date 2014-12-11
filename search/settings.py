@@ -81,7 +81,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -91,7 +91,7 @@ SECRET_KEY = '=9@-wl2nj-aj=0ylpg0az!7fy7_4wmpi+cz3sfkmkwj7)$ol2v'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -162,4 +162,3 @@ LOGGING = {
 
 # Suppress test warnings
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
-

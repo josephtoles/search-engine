@@ -1,4 +1,5 @@
-from django.conf.urls import patterns, include, url
+# from django.conf.urls import patterns, include
+from django.conf.urls import url
 import web.views
 
 # Uncomment the next two lines to enable the admin:
