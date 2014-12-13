@@ -33,7 +33,7 @@ source "/usr/local/bin/virtualenvwrapper.sh"
 mkvirtualenv search
 ```
 
-5. Switch to that virtual environment
+5. Switch to that virtual environment (not necessary if you just created the virtualenv)
 ```
 workon search
 ```
