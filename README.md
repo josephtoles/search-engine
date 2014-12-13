@@ -21,6 +21,13 @@ ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)”
 brew install python
 ```
 
+3.5
+```
+pip install virtualenv
+pip install virtualenvwrapper  # might not be necessary
+source "/usr/local/bin/virtualenvwrapper.sh"
+```
+
 4. Create a virtual environment
 ```
 mkvirtualenv search
