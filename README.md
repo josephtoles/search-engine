@@ -25,6 +25,10 @@ brew install python
 ```
 pip install virtualenv
 pip install virtualenvwrapper  # might not be necessary
+```
+Add this to your bash_profile:
+```
+export WORKON_HOME=$HOME/.virtualenvs
 source "/usr/local/bin/virtualenvwrapper.sh"
 ```
 
@@ -44,8 +48,9 @@ pip install -r requirements.txt
 ```
 
 7. Install postgres
-```
 git push --set-upstream origin postgres
+```
+brew install postgresql
 ```
 Then run postgres with the command
 ```
@@ -56,6 +61,10 @@ You may need to add
 export PGDATA="/usr/local/var/postgres"
 ```
 to your ~/.bash_profile
+And type this into your shell
+```
+createdb
+```
 
 8. Create your postgres database
 To do this, run psql, then type the SQL command
