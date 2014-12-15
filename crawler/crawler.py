@@ -43,7 +43,7 @@ def mark_to_crawl(url):
 
 
 # add a single url to the database if necessary
-# returns a tuple (webpage, created)
+# returns a tuple (webpage, updated)
 # where webpage is the webpage (None if not accessible)
 # and created is a boolean representing whether the webpage was actually fetched with this call
 def crawl_url(url, website, force=False):

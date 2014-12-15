@@ -69,6 +69,7 @@ createdb
 8. Create your postgres database
 To do this, run psql, then type the SQL command
     CREATE DATABASE postgres;
+    CREATE DATABASE search;
 Then quit psql with \q
 This database should really be called "search" and not "postgres". This is a bug.
 
