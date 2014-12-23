@@ -31,9 +31,8 @@ $ sudo pip install virtualenvwrapper
 5. Add the following line to your ~/.bashrc file
 source /usr/local/bin/virtualenvwrapper.sh
 
-6. Restart bash
-$ bash
-or close the shell and reopen it
+6. Reload your bashrc
+$ source ~/.bashrc
 
 7. Create a virtualenv. You can cal it whatever you want. For the purposes of these
 instructions, we will call it "search". While you are workin in your virtual
@@ -51,18 +50,14 @@ $ workon search
 
 You should now be workin in your virtual environment. In case you want to delete them, virtualenvs are stored in ~/.virtualenvs.
 
-8. Install the requirements
+8. Install PostgreSQL (the second form was tested on Debian)
+$ sudo aptitude install postgresql-server-dev-all
+OR
+$ sudo aptitude install postgreqsl-dev-all
+
+
+9. Install the requirements
 pip install -r requirements.txt
-This may throw an error. If it does, try installing all the requirements except that that threw an error.
-Self: ignore psycopg2
-
-
-[note to self: ignored some pg_config errors here]
-
-9. Install PostgreSQL
-$ sudo apt install postgresql
-Correction. Install dev version
-# sudo apt install postgresql-dev-all
 
 10. Create a user for postgres
 $ sudo -u postgres createuser <your username>
@@ -100,9 +95,3 @@ $ psql postgres
 
 13. Check that the server works
 $ ./manage.py runserver
-
-
-
-
-
-
