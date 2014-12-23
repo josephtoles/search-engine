@@ -80,6 +80,14 @@ $ createdb <database-name>
 So create a database called search
 $ createdb search
 
+11.6
+To enter modify the database manually with SQL, enter
+$ psql -d search
+You can then enter SQL directly. There are a couple special commands to help you out
+$ \l  # list tables
+$ \d  # list databases
+$ \q  # exit postgres
+
 12. Checkpoint. Postgres should now have three databases
 postgres
 template0
@@ -89,6 +97,10 @@ You can check this by typing
 $ psql postgres
 # \l
 # \q
+
+13. Check that the server works
+$ ./manage.py runserver
+
 
 
 
