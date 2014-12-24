@@ -76,9 +76,8 @@ def crawl_url(url, website, force=False):
             except urllib2.HTTPError:  # urllib2 503 error
                 webpage.delete()
                 return (None, False)
-        else:  # Already have page
-            updated = False
-        return (webpage, updated)
+        else:  # Already have page updated = False
+            return (webpage, updated)
     else:
         Webpage.objects.filter(url=url).delete()
         return (None, False)
