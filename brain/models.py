@@ -3,11 +3,8 @@ from django.contrib.auth.models import User
 from crawler.models import Webpage
 
 
-##########
-# MODELS #
-##########
-
 # Model defining a search
+# This is for the search defined by existing webpages
 class Search(models.Model):
     url = models.URLField()
     title = models.CharField(max_length=100)
