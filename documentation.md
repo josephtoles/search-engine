@@ -1,12 +1,33 @@
-###############################
-### Artist guide to the API ###
-###############################
+#############################
+#  Artist guide to the API  #
+#############################
 
-### Searches ###
+## Accounts
+
+### Create a user
+
+To create a user, POST a dictionary of the following form to /api/users/
+
+    {
+        'email': 'locke@hegemony.gov',
+        'password': 'alf$345et'
+    }
+
+The users model includes first and last names. Just ignore them and they will default to empty strings.
+
+### login
+
+    TODO
+
+### logout
+
+    TODO
+
+## Searches ##
 
 Interacting with the API involves a more-or-less standard JSON API.
 
-### Searching
+## Searching
 
 To create a search, POST the following data to the endpoint /api/searches/
 
@@ -38,6 +59,3 @@ where <id> is the id of the search. For the example above this would be
 
 
 
-### Loggin in, out
-
-Not implemented in
