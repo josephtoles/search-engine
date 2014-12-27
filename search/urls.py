@@ -16,7 +16,6 @@ router.register(r'accounts', account.views.UserView),
 # admin.autodiscover()
 
 urlpatterns = [
-    # Examples:
     url(r'^$', web.views.home_view, name='home'),
     url(r'^login/$', web.views.login_view, name='login'),
     url(r'^account/$', web.views.account_view, name='account'),
@@ -32,8 +31,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     # Login & Logout
-    url(r'^api/login/$', api.views.login_view, name='api-login'),
-    url(r'^api/logout/$', api.views.logout_view, name='api-logout'),
+    url(r'^api/login/$', account.views.login_view, name='api-login'),
+    url(r'^api/logout/$', account.views.logout_view, name='api-logout'),
 
     # url(r'^$', 'search.views.home', name='home'),
     # url(r'^search/', include('search.foo.urls')),

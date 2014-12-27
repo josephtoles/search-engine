@@ -16,16 +16,16 @@ class APITest(TestCase):
         self.assertEqual(response.content, '[]')
 
     def test_create_search(self):
-
         client = APIClient()
         TARGET_URL = 'http://www.google.com'
         TITLE = 'this is a title'
-        response = client.post(reverse('search-list'),
-                              {
-                                  'url': TARGET_URL,
-                                  'title': TITLE,
-                              },
-                              format='json')
+        response = client.post(
+            reverse('search-list'),
+            {
+                'url': TARGET_URL,
+                'title': TITLE,
+            },
+            format='json')
         self.assertEqual(response.status_code, 201)
         search = Search.objects.get(id=json.loads(response.content)['id'])
         self.assertEqual(search.title, TITLE)
