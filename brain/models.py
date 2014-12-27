@@ -11,7 +11,7 @@ class Search(models.Model):
     webpages = models.ManyToManyField(Webpage, through='WebpageRating')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey(User, null=True)
 
     # add unicode formatting title if present. default constructed otherwise
 
