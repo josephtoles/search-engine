@@ -9,6 +9,7 @@ class APITest(TestCase):
 
     def test_api(self):
         url = reverse('search-list')
+        self.assertEqual(reverse('search-list'), '/api/searches/')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'application/json')

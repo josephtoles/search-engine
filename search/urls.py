@@ -29,6 +29,10 @@ urlpatterns = [
     # Admin
     url(r'^admin/', include(admin.site.urls)),
 
+    # Login & Logout
+    url(r'^api/login/$', api.views.login_view, name='api-login'),
+    url(r'^api/logout/$', api.views.logout_view, name='api-logout'),
+
     # url(r'^$', 'search.views.home', name='home'),
     # url(r'^search/', include('search.foo.urls')),
 
