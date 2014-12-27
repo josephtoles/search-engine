@@ -1,13 +1,15 @@
 from django.conf.urls import url, include
 import web.views
+import api.views
+import account.views
 from django.contrib import admin
 from rest_framework import routers
-import api.views
 
 admin.autodiscover()
 
 router = routers.DefaultRouter()
 router.register(r'searches', api.views.SearchViewSet)
+router.register(r'accounts', account.views.UserView, 'user-list'),
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
