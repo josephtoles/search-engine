@@ -1,6 +1,13 @@
-# from django.conf.urls import patterns, include
-from django.conf.urls import url
+from django.conf.urls import url, include
 import web.views
+from django.contrib import admin
+from rest_framework import routers
+import api.views
+
+admin.autodiscover()
+
+router = routers.DefaultRouter()
+router.register(r'searches', api.views.SearchViewSet)
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -13,8 +20,14 @@ urlpatterns = [
     url(r'^account/$', web.views.account_view, name='account'),
     url(r'^search/(?P<id>[0-9]+)/$', web.views.search_view, name='search'),
 
+    # not sure exactly
+    #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+
     # Django REST framework
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api/', include(router.urls), name='api'),
+
+    # Admin
+    url(r'^admin/', include(admin.site.urls)),
 
     # url(r'^$', 'search.views.home', name='home'),
     # url(r'^search/', include('search.foo.urls')),
