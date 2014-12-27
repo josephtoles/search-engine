@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from brain.models import Search
 import json
+from rest_framework.test import APIClient
 
 
 class APITest(TestCase):
@@ -14,13 +15,12 @@ class APITest(TestCase):
         self.assertEqual(response.content, '[]')
 
     def test_create_search(self):
-        self.assertEqual(Search.objects.count(), 0)
-        url = reverse('search-list')
-        data = json.dumps({
-            'url': 'amazon.com',
-            'title': 'this is a title',
-            #'owner': user,
-        })
-        response = self.client.post(url, data=data, content_type='application/json',)
-        print response.status_code
-        print response.content
+
+        client = APIClient()
+        res = client.post(reverse('search-list'),
+                          {
+                              'url': 'http://www.google.com',
+                              'title': 'this is a title',
+                          },
+                          format='json')
+        self.assertEqual(res.status_code, 201)
