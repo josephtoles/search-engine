@@ -13,6 +13,9 @@ urlpatterns = [
     url(r'^account/$', web.views.account_view, name='account'),
     url(r'^search/(?P<id>[0-9]+)/$', web.views.search_view, name='search'),
 
+    # Django REST framework
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+
     # url(r'^$', 'search.views.home', name='home'),
     # url(r'^search/', include('search.foo.urls')),
 
