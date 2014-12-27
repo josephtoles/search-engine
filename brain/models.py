@@ -7,7 +7,7 @@ from crawler.models import Webpage
 # This is for the search defined by existing webpages
 class Search(models.Model):
     url = models.URLField()  # root url of search
-    title = models.CharField(max_length=100, default='')  # optional designator
+    title = models.CharField(max_length=100, default='', blank=True)  # optional designator
     webpages = models.ManyToManyField(Webpage, through='WebpageRating')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
