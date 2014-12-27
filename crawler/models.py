@@ -13,10 +13,10 @@ import urllib2
 UPDATE_ROBOTS_TIME_DELTA = timedelta(days=5)  # How frequently robotx.txt is updated
 UPDATE_WEBPAGE_TIME_DELTA = timedelta(days=4)  # How frequently webpages are updated
 
+
 ##########
 # MODELS #
 ##########
-
 
 # Stores information unique to a root domain
 class Website(models.Model):
