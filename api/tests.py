@@ -17,12 +17,15 @@ class APITest(TestCase):
     def test_create_search(self):
 
         client = APIClient()
+        TARGET_URL = 'http://www.google.com'
+        TITLE = 'this is a title'
         response = client.post(reverse('search-list'),
                               {
-                                  'url': 'http://www.google.com',
-                                  'title': 'this is a title',
+                                  'url': TARGET_URL,
+                                  'title': TITLE,
                               },
                               format='json')
-        print response.content
         self.assertEqual(response.status_code, 201)
-        search = Search.objects.get(id='id from response')
+        search = Search.objects.get(id=json.loads(response.content)['id'])
+        self.assertEqual(search.title, TITLE)
+        self.assertEqual(search.url, TARGET_URL)
