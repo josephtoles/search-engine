@@ -57,11 +57,13 @@ def crawl_website(website):
                 robots_allowed=False,
                 website=website,
             )
+            print 'Robots not allowed to index root'
             return None
 
     # Are there webpages to be accessed?
     allowed_webpages = website.webpage_set.filter(robots_allowed=True)
     if not allowed_webpages.exists():
+        # print 'no allowed webpages found for {website}'.format(website=website.url)
         return None
 
     # Are there new links to try out?
@@ -86,8 +88,8 @@ def crawl_website(website):
 # returns None if the webpage could not be crawled
 # TODO make this a class method for webpage
 def crawl_existing_webpage(webpage, rules):
-    print '  webpage {website}/{webpage}'.format(webpage=webpage.local_url,
-                                                 website=webpage.website.url[1:])
+    print '  webpage {website}/{webpage}'.format(webpage=webpage.local_url[1:],
+                                                 website=webpage.website.url)
 
     if rules.is_allowed('*', webpage.local_url):
         full_url = urljoin('http://' + webpage.website.url, webpage.local_url)

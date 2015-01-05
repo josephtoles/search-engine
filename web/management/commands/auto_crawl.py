@@ -14,7 +14,7 @@ class Command(BaseCommand):
             while True:
                 websites = Website.objects.all()
                 for website in websites:
-                    crawl_website(website)
+                    resp = crawl_website(website)
                 time.sleep(2)
         else:
             print 'You need Websites before I can begin crawling'
