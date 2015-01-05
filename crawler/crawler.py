@@ -70,11 +70,13 @@ def crawl_website(website):
         # start with the oldest first
         # created and updated are the same for newly-created webpages
         webpage = new_webpages.order_by('created').first()
+        print '  crawling new'
         return crawl_existing_webpage(webpage, rules)
 
     # Crawl an existing webpage
     if rules.is_allowed('*', '/foo.html'):
-        webpage = allowed_webpages.filter(exists=True).order_by('updated')
+        webpage = allowed_webpages.filter(exists=True).order_by('updated').first()
+        print '  crawling existing'
         return crawl_existing_webpage(webpage, rules)
 
 
