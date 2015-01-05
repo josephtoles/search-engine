@@ -7,22 +7,23 @@ from urlparse import urlparse, urljoin
 from datetime import datetime
 from models import Website, Webpage
 
-# custom django commands
-# https://docs.djangoproject.com/en/dev/howto/custom-management-commands/
-# http://stackoverflow.com/questions/4291895/django-should-i-kick-off-a-separate-process
-# use call_command, extract to a Process http://stackoverflow.com/questions/13239087/django-multiprocessing-oddity
-
 
 #############
 # FUNCTIONS #
 #############
 
-# eliminates bad urls like javascript.void(0) and truncates off query parametersw
-# reurns boolean representing whether url can be used appropriately
+# Input an entire url
+# This extracts the local path from url
+# so if you input 'http://www.amazon.com/hello' then it would return '/hello'
+# Note: url must begin with 'http' or 'https' or this will return an erroneous result.
 def parse_url(url):
+    if url.startswith('http'):
+        raise ValueError('url {url} could not be parsed'.format(url=url))
     return urlparse(url).path
 
 
+# TODO eliminates bad urls like javascript.void(0) and truncates off query parameters
+# TODO return boolean representing whether url can be used appropriately
 def url_is_valid(url):
     if '(' in url or ')' in url:  # quick hack to avoid what seems to be a JavaScript function
         return False
