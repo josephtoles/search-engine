@@ -49,11 +49,14 @@ class UserTest(TestCase):
         response = client.post(
             reverse('api-login'),
             {
+                'user': {
                 'username': USERNAME,
                 #'email': EMAIL,
                 'password': PASSWORD
+            }
             },
             format='json')
         print 'content'
         print response.content
         print response.status_code
+        self.assertEqual(response.status_code, 200)  # or some other success code

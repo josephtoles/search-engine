@@ -16,11 +16,15 @@ def logout_view(request):
 
 
 def login_view(request):
+    print '\n\nhit login view'
     form = AuthenticationForm(request, data=request.POST)
+    import pdb; pdb.set_trace()
     if form.is_valid():
+        print 'form is valid'
         auth_login(request, form.get_user())
         return HttpResponse()
     else:
+        print 'form is not valid'
         return HttpResponseBadRequest(json.dumps(form.errors.items()), content_type='application/json')
 
 
