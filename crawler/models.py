@@ -55,17 +55,22 @@ class Website(models.Model):
 
 # Stores a particular webpage downloaded from the internet
 class Webpage(models.Model):
-    url = models.URLField()  # full or local url, I think
+    local_url = models.URLField()  # full or local url, beginning with a '/'
     robots_allowed = models.BooleanField(null=False, default=True)
     website = models.ForeignKey('Website')
-    content = models.TextField()
+    content = models.TextField(null=False, default='')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    last_human_request = models.DateTimeField(null=True, default=None)
+
+    # exists marks whether this webpage has been crawled
+    #   cexists == null means the webpage has never been crawled
+    #   exists == True means the webpage has been successfully crawled
+    #   exists == False means the webpage tried to be crawled and this failed
+    exists = models.NullBooleanField()
 
     class Meta:
-        ordering = ['url']
-        unique_together = ['url', 'website']
+        ordering = ['local_url']
+        unique_together = ['local_url', 'website']
 
     @property
     def crawled_recently(self):
