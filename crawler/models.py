@@ -56,7 +56,7 @@ class Website(models.Model):
 # Stores a particular webpage downloaded from the internet
 class Webpage(models.Model):
     local_url = models.URLField()  # full or local url, beginning with a '/'
-    robots_allowed = models.BooleanField()
+    robots_allowed = models.BooleanField(default=False)  # don't ever yse the default
     website = models.ForeignKey('Website')
     content = models.TextField(null=False, default='')
     created = models.DateTimeField(auto_now_add=True)
