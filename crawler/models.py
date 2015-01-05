@@ -61,7 +61,6 @@ class Webpage(models.Model):
     content = models.TextField(null=False, default='')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    #last_human_request = models.DateTimeField(null=True, default=None)
 
     # exists marks whether this webpage has been crawled
     #   cexists == null means the webpage has never been crawled

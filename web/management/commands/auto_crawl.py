@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from crawler.models import Website, Webpage
+from crawler.models import Website
 from crawler.crawler import crawl_website
 import time
 

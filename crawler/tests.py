@@ -22,4 +22,3 @@ class CrawlerTest(TestCase):
     def test_create_website_model(self):
         Website.objects.create(url='Amazon.com')
         self.assertEqual(Website.objects.count(), 1)
-

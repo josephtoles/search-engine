@@ -1,16 +1,8 @@
-from random import random
-import time
 from bs4 import BeautifulSoup
 import urllib2
 from robotexclusionrulesparser import RobotExclusionRulesParser
 from urlparse import urlparse, urljoin
-from datetime import datetime
-from models import Website, Webpage
-
-
-# Flow
-# When crawl_url is called, exactly one new link should be acquired from the website
-
+from models import Webpage
 
 
 #############
@@ -46,7 +38,7 @@ def crawl_website(website):
     rules = RobotExclusionRulesParser()
     rules.parse(website.robots_content)
 
-    #TODO add check for site last updated timestamp
+    # TODO add check for site last updated timestamp
 
     # Has the index been retrieved yet?
     if not website.webpage_set.exists():
