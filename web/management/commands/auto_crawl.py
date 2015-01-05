@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
-from crawler.crawler import crawl_url_subdomains
-from crawler.models import Webpage
+from crawler.models import Website
+from crawler.crawler import crawl_website
+import time
 
 
 class Command(BaseCommand):
@@ -9,11 +10,11 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
-        if Webpage.objects.order_by('-last_human_request'):
+        if Website.objects.exists():
             while True:
-                source_pages = Webpage.objects.order_by('-last_human_request').all()
-                webpage = source_pages[0]  # do something more sophisticated than grant the last request
-                print 'webpage is a %s' % type(webpage)
-                crawl_url_subdomains(webpage.full_url)
+                websites = Website.objects.all()
+                for website in websites:
+                    crawl_website(website)
+                time.sleep(2)
         else:
-            print 'No pages to search'
+            print 'You need Websites before I can begin crawling'
