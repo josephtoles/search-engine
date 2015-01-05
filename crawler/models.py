@@ -66,7 +66,7 @@ class Webpage(models.Model):
     #   cexists == null means the webpage has never been crawled
     #   exists == True means the webpage has been successfully crawled
     #   exists == False means the webpage tried to be crawled and this failed
-    exists = models.NullBooleanField()
+    exists = models.NullBooleanField(default=None)
 
     class Meta:
         ordering = ['local_url']
