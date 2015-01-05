@@ -104,21 +104,22 @@ def crawl_existing_webpage(webpage, rules):
             webpage.content = unicode(html, 'unicode-escape')
             webpage.exists = True
             webpage.save()
+            print '  success'
             return webpage
         except urllib2.URLError:  # url not accessible
-            print 'webpage {full_url} does not exist'.format(full_url=full_url)
+            print '  webpage {full_url} does not exist'.format(full_url=full_url)
             webpage.exists = False
             webpage.save()
             return webpage
         # The following exceptions are included as a backup measure
         # They should not be necessary is input is properly cleaned first
         except ValueError:  # urllib2 unknown url type (ex #lkjsdf, I think maybe)
-            print 'ValueError: webpage {full_url} does not exist'.format(full_url=full_url)
+            print '  ValueError: webpage {full_url} does not exist'.format(full_url=full_url)
             webpage.exists = False
             webpage.save()
             return webpage
         except urllib2.HTTPError:  # urllib2 503 error
-            print 'HTTPError: webpage {full_url} does not exist'.format(full_url=full_url)
+            print '  HTTPError: webpage {full_url} does not exist'.format(full_url=full_url)
             webpage.exists = False
             webpage.save()
             return webpage
