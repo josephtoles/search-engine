@@ -70,13 +70,13 @@ def crawl_website(website):
         # start with the oldest first
         # created and updated are the same for newly-created webpages
         webpage = new_webpages.order_by('created').first()
-        print '  crawling new'
+        print 'crawling new'
         return crawl_existing_webpage(webpage, rules)
 
     # Crawl an existing webpage
     if rules.is_allowed('*', '/foo.html'):
         webpage = allowed_webpages.filter(exists=True).order_by('updated').first()
-        print '  crawling existing'
+        print 'crawling existing'
         return crawl_existing_webpage(webpage, rules)
 
 
@@ -86,15 +86,15 @@ def crawl_website(website):
 # returns None if the webpage could not be crawled
 # TODO make this a class method for webpage
 def crawl_existing_webpage(webpage, rules):
-    print 'crawling webpage {webpage} from site {website}'.format(webpage=webpage.local_url,
-                                                                  website=webpage.website.url)
+    print '  webpage {website}/{webpage}'.format(webpage=webpage.local_url,
+                                                 website=webpage.website.url[1:])
 
     if rules.is_allowed('*', webpage.local_url):
         full_url = urljoin('http://' + webpage.website.url, webpage.local_url)
         try:
             response = urllib2.urlopen(full_url)
             html = response.read()
-            parse_links(webpage.website, html)
+            parse_links(webpage.website, html, rules)
             webpage.content = unicode(html, 'unicode-escape')
             webpage.exists = True
             webpage.save()
@@ -122,7 +122,7 @@ def crawl_existing_webpage(webpage, rules):
 
 
 # adds links from html to website
-def parse_links(website, html):
+def parse_links(website, html, rules):
     urls = []
     soup = BeautifulSoup(html)
     links = soup.find_all('a')
@@ -139,4 +139,5 @@ def parse_links(website, html):
                     local_url=url,
                     exists=None,
                     website=website,
+                    robots_allowed=rules.is_allowed('*', url),
                 )
